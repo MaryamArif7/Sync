@@ -7,7 +7,7 @@ client/node_modules/
 server/node_modules/
 
 # Next.js build outputs
-frontend/.next/
+client/.next/
 .next/
 **/next/
 
