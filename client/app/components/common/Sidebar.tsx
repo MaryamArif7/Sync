@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 const LINKS = [
-  { name: "Discover", href: "/Discover/", icon: LayoutDashboard },
+  { name: "Discover", href: "/Discover", icon: LayoutDashboard },
   { name: "Rooms", href: "/Discover/rooms", icon: DoorOpen },
   { name: "Playlists", href: "/Discover/playlists", icon: ListMusic },
 ];
@@ -20,22 +20,19 @@ const LINKS = [
 export function Sidebar({ children }: { children?: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-
   const toggleSidebar = () => setIsOpen((prev) => !prev);
   const closeSidebar = () => setIsOpen(false);
-
   return (
     <div className="flex h-screen overflow-hidden">
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-sm shadow-lg">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-pink-500/10 rounded-lg" />
+         
             <span className="text-xl font-bold text-white">Sync</span>
           </div>
           <button
             onClick={toggleSidebar}
             className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
             {isOpen ? (
               <X className="w-6 h-6 text-white" />
@@ -50,7 +47,6 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
         <div
           className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
           onClick={closeSidebar}
-          aria-hidden="true"
         />
       )}
 
@@ -60,15 +56,11 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
         }`}
       >
         <div className="p-6">
-          <div className="mb-12  lg:text-center">
+          <div className="mb-12 lg:text-center">
             <span className="text-2xl font-bold text-white ">Sync</span>
           </div>
 
-          <nav
-            className="space-y-1"
-            role="navigation"
-            aria-label="Main navigation"
-          >
+          <nav className="space-y-1" role="navigation">
             {LINKS.map(({ name, href, icon: Icon }) => {
               const isActive = pathname === href;
               return (
@@ -78,21 +70,15 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
                   onClick={closeSidebar}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                     isActive
-                      ? "bg-gradient-to-r from-pink-700/20 to-purple-500/20 text-white font-semibold shadow-[0_0_30px_rgba(236,72,153,0.5)] border border-pink-500/30"
-                      : "text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-pink-500/10 hover:to-purple-500/10 hover:border hover:border-pink-500/20 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]"
+                      ? " text-white font-semibold shadow-[0_0_25px_rgba(236,72,153,0.8)]"
+                      : "text-gray-400 hover:text-white hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]"
                   }`}
-                  aria-current={isActive ? "page" : undefined}
                 >
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-r from-pink-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                      isActive ? "opacity-100" : ""
-                    }`}
-                  />
-
+                 
                   <Icon
                     className={`w-5 h-5 relative z-10 transition-all duration-300 ${
                       isActive
-                        ? "text-pink-purple-500/5 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"
+                        ? "text-white drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"
                         : "text-gray-400 group-hover:text-pink-400 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.6)]"
                     }`}
                   />
@@ -100,9 +86,7 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
                     {name}
                   </span>
 
-                  {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-pink-500 to-purple-500 rounded-r-full shadow-[0_0_10px_rgba(236,72,153,0.8)]" />
-                  )}
+                
                 </Link>
               );
             })}
@@ -112,11 +96,10 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
         <div className="p-6 border-t border-white/10">
           <button
             // onClick={logout}
-            className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-red-500/10 hover:to-pink-500/10 rounded-xl transition-all duration-300 group relative overflow-hidden hover:border hover:border-red-500/20 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]"
-            aria-label="Log out"
+            className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:text-white  rounded-xl transition-all duration-300 group relative overflow-hidden  hover:shadow-[0_0_25px_rgba(236,72,153,0.8)]"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <LogOut className="w-5 h-5 relative z-10 group-hover:text-red-400 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(239,68,68,0.6)] transition-all duration-300" />
+            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <LogOut className="w-5 h-5 relative z-10 group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300" />
             <span className="text-sm relative z-10">Log out</span>
           </button>
         </div>
