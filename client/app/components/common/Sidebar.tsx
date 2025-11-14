@@ -2,40 +2,40 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
-import c from "classnames";
-import { LayoutDashboard, DoorOpen, ListMusic} from "lucide-react";
-import { LogOut, Menu, X } from "lucide-react";
+import {
+  LayoutDashboard,
+  DoorOpen,
+  ListMusic,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
 
-const Links = [
-  { name: "Discover", href: "/Dashboard/", icon: LayoutDashboard },
-  { name: "Rooms", href: "/Dashboard/rooms", icon: DoorOpen },
-  { name: "Playlists", href: "/Dashboard/playlists", icon: ListMusic },
+const LINKS = [
+  { name: "Discover", href: "/Discover/", icon: LayoutDashboard },
+  { name: "Rooms", href: "/Discover/rooms", icon: DoorOpen },
+  { name: "Playlists", href: "/Discover/playlists", icon: ListMusic },
 ];
 
 export function Sidebar({ children }: { children?: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const toggleSidebar = () => setIsOpen(!isOpen);
+
+  const toggleSidebar = () => setIsOpen((prev) => !prev);
   const closeSidebar = () => setIsOpen(false);
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-black-950/50 shadow-lg">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-sm shadow-lg">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10">
-              {/* <img
-                className="object-contain"
-                src="/logo3.png"
-                alt="Food Rush"
-              /> */}
-            </div>
+            <div className="w-10 h-10 bg-pink-500/10 rounded-lg" />
             <span className="text-xl font-bold text-white">Sync</span>
           </div>
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-lg  transition-colors"
-            aria-label="Toggle menu"
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
             {isOpen ? (
               <X className="w-6 h-6 text-white" />
@@ -44,70 +44,85 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
             )}
           </button>
         </div>
-      </div>
+      </header>
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
           onClick={closeSidebar}
+          aria-hidden="true"
         />
       )}
 
       <aside
-        className={c(
-          "fixed lg:static inset-y-0 left-0 z-50 w-64 bg-black shadow-[0_0_15px_rgba(236,72,153,0.5)] flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0",
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-black to-black/95 shadow-[0_0_20px_rgba(236,72,153,0.3)] flex flex-col justify-between transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        )}
+        }`}
       >
         <div className="p-6">
-          <div className="hidden lg:flex items-center gap-3 mb-12">
-            <div className="w-12 h-12">
-              {/* <img
-                className="object-contain"
-                src="/logo3.png"
-                alt="Food Rush"
-              /> */}
-            </div>
-            <span className="text-2xl font-bold text-white">Sync</span>
+          <div className="mb-12  lg:text-center">
+            <span className="text-2xl font-bold text-white ">Sync</span>
           </div>
 
-          <div className="lg:hidden h-4" />
-
-          <nav className="space-y-2">
-            {Links.map(({ name, href, icon: Icon }) => {
+          <nav
+            className="space-y-1"
+            role="navigation"
+            aria-label="Main navigation"
+          >
+            {LINKS.map(({ name, href, icon: Icon }) => {
               const isActive = pathname === href;
               return (
                 <Link
                   key={href}
                   href={href}
                   onClick={closeSidebar}
-                  className={c(
-                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                     isActive
-                      ? "bg-black/950-50 shadow-[0_0_25px_rgba(236,72,153,0.8)] text-white font-medium"
-                      : "text-white hover:bg-black/950-100"
-                  )}
+                      ? "bg-gradient-to-r from-pink-700/20 to-purple-500/20 text-white font-semibold shadow-[0_0_30px_rgba(236,72,153,0.5)] border border-pink-500/30"
+                      : "text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-pink-500/10 hover:to-purple-500/10 hover:border hover:border-pink-500/20 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]"
+                  }`}
+                  aria-current={isActive ? "page" : undefined}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span className="text-sm">{name}</span>
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-r from-pink-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                      isActive ? "opacity-100" : ""
+                    }`}
+                  />
+
+                  <Icon
+                    className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+                      isActive
+                        ? "text-pink-purple-500/5 drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"
+                        : "text-gray-400 group-hover:text-pink-400 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.6)]"
+                    }`}
+                  />
+                  <span className="text-sm relative z-10 transition-all duration-300">
+                    {name}
+                  </span>
+
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-pink-500 to-purple-500 rounded-r-full shadow-[0_0_10px_rgba(236,72,153,0.8)]" />
+                  )}
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        <div className="p-6 border-t border-black/10">
+        <div className="p-6 border-t border-white/10">
           <button
             // onClick={logout}
-            className="flex items-center gap-3 px-4 py-3 w-full text-white hover:bg-black/5 rounded-lg transition-all duration-200"
+            className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-red-500/10 hover:to-pink-500/10 rounded-xl transition-all duration-300 group relative overflow-hidden hover:border hover:border-red-500/20 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+            aria-label="Log out"
           >
-            <LogOut className="w-5 h-5" />
-            <span className="text-sm">Log out</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <LogOut className="w-5 h-5 relative z-10 group-hover:text-red-400 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(239,68,68,0.6)] transition-all duration-300" />
+            <span className="text-sm relative z-10">Log out</span>
           </button>
         </div>
       </aside>
 
-      <div className="flex-1 overflow-y-auto bg-black-950/50 pt-16 lg:pt-0">
+      <div className="flex-1 overflow-y-auto bg-black/95 pt-16 lg:pt-0">
         <main className="p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
     </div>
