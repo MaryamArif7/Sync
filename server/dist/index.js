@@ -19,4 +19,4 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ limit: "200mb", extended: true }));
 app.use((0, cookie_parser_1.default)());
 app.use(router_1.default);
-app.listen(3000, () => console.log("Server running on port 3000"));
+app.listen(5000, () => console.log("Server running on port 5000"));
