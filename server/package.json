@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Backend for Sync",
   "main": "index.js",
-"scripts": {
-  "build": "tsc --project tsconfig.json",
-  "start": "node dist/index.js",
-  "dev": "tsc --project tsconfig.json && nodemon dist/index.js"
-},
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsc --project tsconfig.json && nodemon dist/index.js"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -24,6 +24,7 @@
     "mongoose": "^8.19.4",
     "node-cache": "^5.1.2",
     "node-cron": "^4.2.1",
+    "nodemon": "^3.1.11",
     "prom-client": "^15.1.3",
     "rate-limiter-flexible": "^8.2.1",
     "redis": "^5.9.0",

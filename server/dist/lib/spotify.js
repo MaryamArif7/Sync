@@ -4,8 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const spotify_web_api_node_1 = __importDefault(require("spotify-web-api-node"));
-const Spotify = new spotify_web_api_node_1.default({
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+console.log('=== Spotify Credentials Debug ===');
+console.log('Client ID:', process.env.SPOTIFY_CLIENT_ID);
+console.log('Client ID length:', process.env.SPOTIFY_CLIENT_ID?.length);
+console.log('Client Secret:', process.env.SPOTIFY_CLIENT_SECRET);
+console.log('Client Secret length:', process.env.SPOTIFY_CLIENT_SECRET?.length);
+console.log('================================');
+const spotifyApi = new spotify_web_api_node_1.default({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 });
-exports.default = Spotify;
+exports.default = spotifyApi;

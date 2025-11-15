@@ -1,8 +1,9 @@
 import { getAccessToken } from "./getAccessToken";
 export const topSongs=async ()=>{
     const token=await getAccessToken();
-   const playlistId= "37i9dQZEVXbMDoHDwVN2tF";
-   const res=await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    console.log(token);
+  
+   const res=await fetch('https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF/tracks?limit=10',
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -10,5 +11,6 @@ export const topSongs=async ()=>{
     }
    )
    const tracks=await res.json();
+   console.log(tracks);
    return tracks;
 }

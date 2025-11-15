@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAccessToken = void 0;
 const spotify_1 = __importDefault(require("../lib/spotify"));
 const getAccessToken = async () => {
-    const token = spotify_1.default.clientCredentialsGrant();
-    return token;
+    const token = await spotify_1.default.clientCredentialsGrant();
+    console.log(token);
+    return token.body.access_token;
 };
 exports.getAccessToken = getAccessToken;
