@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {Player} from './Player';
 import React, { useState } from "react";
 import {
   LayoutDashboard,
@@ -105,8 +106,14 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
         </div>
       </aside>
 
-      <div className="flex-1 overflow-y-auto bg-black/95 pt-16 lg:pt-0">
-        <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+      <div className="flex-1  bg-black/95 pt-16 lg:pt-0">
+        <main className="p-4 sm:p-6 lg:p-8">{children}
+          <div className="pt-96" >
+          <Player />
+
+          </div>
+           
+        </main>
       </div>
     </div>
   );
