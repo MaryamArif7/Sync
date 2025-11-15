@@ -5,7 +5,7 @@ export const topSongs = async (req: Request, res: Response) => {
   try {
     const token = await getAccessToken();
     const response = await fetch(
-      'https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n',
+      'https://api.spotify.com/v1/artists/3Nrfpe0tUJi4K4DXYWgMUX/top-tracks',
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -14,7 +14,7 @@ export const topSongs = async (req: Request, res: Response) => {
     );
     
     const tracks = await response.json(); 
-    console.log('Tracks fetched:', tracks.tracks?.items?.length);
+   
     
     return res.json(tracks);
     
