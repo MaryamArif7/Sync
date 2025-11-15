@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "Backend for Sync",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+"scripts": {
+  "build": "tsc --project tsconfig.json",
+  "start": "node dist/index.js",
+  "dev": "tsc --project tsconfig.json && nodemon dist/index.js"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -42,6 +44,7 @@
     "@types/spotify-web-api-node": "^5.0.11",
     "dotenv": "^17.2.3",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
 }
