@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {Player} from './Player';
+import { Player } from "./Player";
 import React, { useState } from "react";
 import {
   LayoutDashboard,
@@ -28,7 +28,6 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-sm shadow-lg">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-         
             <span className="text-xl font-bold text-white">Sync</span>
           </div>
           <button
@@ -75,7 +74,6 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
                       : "text-gray-400 hover:text-white hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]"
                   }`}
                 >
-                 
                   <Icon
                     className={`w-5 h-5 relative z-10 transition-all duration-300 ${
                       isActive
@@ -86,8 +84,6 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
                   <span className="text-sm relative z-10 transition-all duration-300">
                     {name}
                   </span>
-
-                
                 </Link>
               );
             })}
@@ -106,14 +102,14 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
         </div>
       </aside>
 
-      <div className="flex-1  bg-black/95 pt-16 lg:pt-0">
-        <main className="p-4 sm:p-6 lg:p-8">{children}
-          <div className="pt-96" >
-          <Player />
-
-          </div>
-           
+      <div className="flex-1 flex flex-col bg-black/95 pt-16 lg:pt-0 overflow-hidden">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-32">
+          {children}
         </main>
+
+        <div className="h-20 fixed bottom-0 left-0 lg:left-64 right-0 z-30  to-transparent backdrop-blur-xl border-t border-white/10 ">
+          <Player />
+        </div>
       </div>
     </div>
   );

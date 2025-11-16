@@ -1,25 +1,47 @@
-import { getAccessToken } from "./getAccessToken";
 import { Request, Response } from "express";
 
 export const topSongs = async (req: Request, res: Response) => {
   try {
-    const token = await getAccessToken();
+
     const response = await fetch(
-      'https://api.spotify.com/v1/artists/3Nrfpe0tUJi4K4DXYWgMUX/top-tracks',
+      'https://charts-spotify-com-service.spotify.com/public/v0/charts',
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Accept': 'application/json',
         },
       }
     );
     
-    const tracks = await response.json(); 
-   
+    if (!response.ok) {
+      throw new Error(`Charts API error: ${response.status}`);
+    }
     
-    return res.json(tracks);
+    const data = await response.json();
+    
+   
+    const chartEntries = data.chartEntryViewResponses?.[0]?.entries || [];
+    
+    const tracks = chartEntries.map((entry: any) => ({
+      rank: entry.chartEntryData?.currentRank,
+      trackName: entry.trackMetadata?.trackName,
+      artists: entry.trackMetadata?.artists?.map((artist: any) => artist.name).join(', '),
+      trackUri: entry.trackMetadata?.trackUri,
+      cover: entry.trackMetadata?.displayImageUri,
+    }));
+    
+    return res.json({
+      success: true,
+      chartName: data.chartEntryViewResponses?.[0]?.displayChart?.chartMetadata?.alias || 'Global Top Songs',
+      date: data.chartEntryViewResponses?.[0]?.displayChart?.chartMetadata?.currentDate,
+      totalTracks: tracks.length,
+      tracks: tracks,
+    });
     
   } catch (error: any) {
-    console.error('Error:', error.message);
-    return res.status(500).json({ error: error.message });
+    console.error('Error fetching charts:', error.message);
+    return res.status(500).json({ 
+      success: false,
+      error: error.message 
+    });
   }
 };
