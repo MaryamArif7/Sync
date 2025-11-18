@@ -107,9 +107,9 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
           {children}
         </main>
 
-        <div className="h-20 fixed bottom-0 left-0 lg:left-64 right-0 z-30  to-transparent backdrop-blur-xl border-t border-white/10 ">
+        {/* <div className="h-[93px] fixed bottom-0 left-0 lg:left-64 right-0 z-30  to-transparent backdrop-blur-xl border-t border-white/10 ">
           <Player />
-        </div>
+        </div> */}
       </div>
     </div>
   );
