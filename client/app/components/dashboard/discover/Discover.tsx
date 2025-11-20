@@ -79,7 +79,7 @@ export const Discover = () => {
           </div>
         </div>
 
-        <div className="w-96 bg-[#0a0614]/30 rounded-3xl flex flex-col border border-white/5 shadow-[0_0_20px_rgba(236,72,153,0.3)] backdrop-blur-xl">
+        <div className="w-96 bg-[#0a0614]/30 rounded-3xl flex flex-col border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="flex border-b border-white/10 px-6">
             <button
               onClick={() => setActiveTab("queue")}
