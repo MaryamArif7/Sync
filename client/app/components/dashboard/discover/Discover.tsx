@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import axios from "axios";
 import { Player } from "../../common/Player";
+import { SearchSongPopup } from "../discover/SearchSongPopup";
 import {
   IoMdPause,
   IoMdPlay,
@@ -14,6 +15,7 @@ export const Discover = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState("queue");
   const [searchQuery, setSearchQuery] = useState("");
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="">
@@ -22,9 +24,11 @@ export const Discover = () => {
           className=" border-none focus:outline-none text-sm"
           type="text"
           placeholder="Search Any Song Here"
+          onClick={() => setOpen(true)}
         />
         <Search className="w-5 h-5" />
       </div>
+      {open && <SearchSongPopup onClose={() => setOpen(false)} />}
       <div className=" bg-black text-white p-4 flex gap-6 max-w-4xl">
         <div className="flex-1 bg-[#0a0614]/30 rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="w-52 h-52 bg-black rounded-3xl flex items-center justify-center mb-1 border border-white/10 relative overflow-hidden">

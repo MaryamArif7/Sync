@@ -1,3 +1,4 @@
+"use client";
 import React, {
   createContext,
   useContext,
@@ -287,7 +288,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         navigator.mediaSession.setActionHandler("seekforward", handleBlock);
       });
     }
-  }, [state.currentSong, playNext, playPrev, resume, pause, seek, user]);
+  }, [state.currentSong, playNext, playPrev, resume, pause, seek ]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
