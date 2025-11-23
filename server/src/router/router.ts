@@ -3,5 +3,5 @@ import {topSongs} from "../functions/topSongs";
 import { search } from "../functions/search";
 const router=express.Router();
 router.get("/topSongs",topSongs);
-router.get("//api/search",search);
+router.get("/search",search);
 export default router;

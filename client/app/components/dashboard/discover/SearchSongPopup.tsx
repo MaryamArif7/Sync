@@ -2,15 +2,27 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import axios from "axios";
+import parse from "html-react-parser";
 import useDebounce from "../../../hooks/useDebounce";
 import { searchResults, searchSongResult } from "@/app/lib/types";
 import { usePlayerContext } from "../../../store/PlayerContext";
 interface SearchSongPopupProps {
   onClose: () => void;
 }
-
+const formatArtistName = (artists: artists[]) => {
+  return artists
+    ?.map((data, index) => {
+      if (index === artists.length - 1) {
+        return `${data.name}`;
+      }
+      return `${data.name}, ${data.name}`;
+    })
+    .join("")
+    .split(",")[0];
+};
 export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   const searchRef = useRef<HTMLDivElement>(null);
+  const containerRef=useRef<HTMLDivElement>(null);
   const [page, setPage] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
@@ -65,11 +77,12 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
       const controller = new AbortController();
       abortControllerRef.current = controller;
       const response = await axios.get(
-        `http://localhost:8000/api/search/?name=${value}`,
+        `http://localhost:5000/search/?name=${value}`,
         { signal: controller.signal }
       );
       if (response.data.success) {
         setSongs((response.data as searchSongResult) || []);
+        console.log(response.data);
       }
     } catch (e) {
       console.error("Error in Searching ,try agarin");
@@ -85,13 +98,48 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
           <div className="flex items-center px-4 py-3 border-b border-gray-700 ">
             <Search size={20} className="text-gray-400" />
             <input
+              autoFocus
+              onChange={handleSearch}
               type="text"
               className="flex-1 bg-transparent border-none px-3 text-[#222F3F]"
               placeholder="Serach Any Song Here"
             />
           </div>
-          <div>
-            <h1>Results here</h1>
+          <div
+            ref={containerRef}
+            className={`flex border-zinc-500 ${
+              songs && "border-t"
+            }  flex-col overflow-hidden backdrop-blur-xl bg-black/80 max-h-[50dvh] pl-2.5 overflow-y-scroll`}
+          >
+            {songs?.data?.results.map((song, i) => (
+              <label
+                key={i}
+                htmlFor={song?.id}
+                title=
+                {`${parse(song?.name)} (${formatArtistName(
+                  song?.artists?.primary || "Unknown"
+                )})`}
+                className={`flex gap-2 px-2.5 text-start hover:bg-zinc-800/20 ${i!=songs.data.results.length-1 && "border-b"} border-white/20 p-2.5 items-center`}
+                >
+
+                  <img 
+                  loading="lazy"
+                   height={500}
+                    width={500}
+                  alt={song?.name}
+                  src={song?.image[song?.image?.length-1]?.url}
+                  />
+                  <div className="text-sm font-medium w-10 truncate">
+                    <p className="font-semibold truncate w-11/12">
+                    {parse(song?.name)}
+                    </p>
+                    <p className="font-medium truncate w-10/12 text-zinc-800/20">
+                      {formatArtistName(song.artists.primary)}
+                    </p>
+
+                  </div>
+              </label>
+            ))}
           </div>
         </div>
       </div>

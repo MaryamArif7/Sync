@@ -1,10 +1,12 @@
 import redisClient from "../cache/redis";
 import { youtube } from "../lib/yt";
 import ytmusic from "../lib/ytMusic";
+import { Response } from "express";
+import {Request} from "express";
  const encrypt = (videoId: string): string => {
   return Buffer.from(videoId).toString('base64url');
 };
-export const search = async (req, res) => {
+export const search = async (req:Request, res:Response) => {
   try {
     const search = String(req.query.name || "").trim();
     if (!search) {
@@ -101,7 +103,7 @@ export const search = async (req, res) => {
       results: [...songs2, ...songs],
     };
 
-    await redisClient.set(key, JSON.stringify(payload), { EX: 3600 });
+     redisClient.set(key, JSON.stringify(payload));
 
     return res.status(200).json({
       success: true,
