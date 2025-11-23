@@ -111,7 +111,7 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
               songs && "border-t"
             }  flex-col overflow-hidden backdrop-blur-xl bg-black/80 max-h-[50dvh] pl-2.5 overflow-y-scroll`}
           >
-            {songs?.data?.results.map((song, i) => (
+            {songs?.data?.results?.map((song, i) => (
               <label
                 key={i}
                 htmlFor={song?.id}
@@ -124,17 +124,17 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
 
                   <img 
                   loading="lazy"
-                   height={500}
-                    width={500}
+                   height={50}
+                    width={50}
                   alt={song?.name}
                   src={song?.image[song?.image?.length-1]?.url}
                   />
-                  <div className="text-sm font-medium w-10 truncate">
-                    <p className="font-semibold truncate w-11/12">
+                  <div className="text-sm font-medium ">
+                    <p className="font-semibold ">
                     {parse(song?.name)}
                     </p>
-                    <p className="font-medium truncate w-10/12 text-zinc-800/20">
-                      {formatArtistName(song.artists.primary)}
+                    <p className="font-medium  text-white">
+                      {song.artists?.primary?.[0].name}
                     </p>
 
                   </div>
