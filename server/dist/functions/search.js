@@ -12,6 +12,7 @@ const encrypt = (videoId) => {
 };
 const search = async (req, res) => {
     try {
+        console.log(req.query);
         const search = String(req.query.name || "").trim();
         if (!search) {
             return res.status(400).json({
@@ -20,12 +21,18 @@ const search = async (req, res) => {
             });
         }
         const key = `search:${search}`;
-        if (await redis_1.default.has(key)) {
+        try {
             const data = await redis_1.default.get(key);
-            return res.status(200).json({
-                success: true,
-                data: data,
-            });
+            if (data && typeof data === 'string') {
+                console.log(' Cache hit for:', key);
+                return res.status(200).json({
+                    success: true,
+                    data: JSON.parse(data),
+                });
+            }
+        }
+        catch (cacheError) {
+            console.log('Cache miss or error:', cacheError);
         }
         const isUrl = search.startsWith("http://") || search.startsWith("https://");
         const yt = isUrl ? await (0, yt_1.youtube)() : null;
@@ -44,6 +51,7 @@ const search = async (req, res) => {
         const normalizeImageUrl = (url) => `https://wsrv.nl/?url=${url
             .replace(/w\d+-h\d+/, "w500-h500")
             .replace("w120-h120", "w500-h500")}`;
+        console.log("songs from yputube music", ytSongs);
         const songs = ytSongs?.map((s) => ({
             id: s.videoId,
             name: s.name,
@@ -67,6 +75,7 @@ const search = async (req, res) => {
                 },
             ],
         })) || [];
+        console.log("Songs from youtube", yt2Songs);
         const songs2 = yt2Songs?.results
             ?.filter((result) => result.type === "Video")
             .slice(0, 1)
@@ -97,7 +106,14 @@ const search = async (req, res) => {
             total: songs.length + songs2.length,
             results: [...songs2, ...songs],
         };
-        await redis_1.default.set(key, JSON.stringify(payload));
+        try {
+            await redis_1.default.set(key, JSON.stringify(payload));
+            console.log('Successfully saved to Redis');
+        }
+        catch (error) {
+            console.error('Redis error:', error);
+        }
+        //  redisClient.set(key, JSON.stringify(payload));
         return res.status(200).json({
             success: true,
             data: payload,

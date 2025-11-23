@@ -2,12 +2,13 @@ import redisClient from "../cache/redis";
 import { youtube } from "../lib/yt";
 import ytmusic from "../lib/ytMusic";
 import { Response } from "express";
-import {Request} from "express";
- const encrypt = (videoId: string): string => {
+import { Request } from "express";
+const encrypt = (videoId: string): string => {
   return Buffer.from(videoId).toString('base64url');
 };
-export const search = async (req:Request, res:Response) => {
+export const search = async (req: Request, res: Response) => {
   try {
+    console.log(req.query);
     const search = String(req.query.name || "").trim();
     if (!search) {
       return res.status(400).json({
@@ -16,15 +17,21 @@ export const search = async (req:Request, res:Response) => {
       });
     }
     const key = `search:${search}`;
-    if (await redisClient.has(key)) {
+    try {
       const data = await redisClient.get(key);
-      return res.status(200).json({
-        success: true,
-        data: data,
-      });
+      if (data && typeof data === 'string') {
+        console.log(' Cache hit for:', key);
+        return res.status(200).json({
+          success: true,
+          data: JSON.parse(data),
+        });
+      }
+    } catch (cacheError) {
+      console.log('Cache miss or error:', cacheError);
     }
 
- 
+
+
     const isUrl = search.startsWith("http://") || search.startsWith("https://");
     const yt = isUrl ? await youtube() : null;
     const [ytMusicResults, youtubeResults] = await Promise.allSettled([
@@ -44,7 +51,7 @@ export const search = async (req:Request, res:Response) => {
       `https://wsrv.nl/?url=${url
         .replace(/w\d+-h\d+/, "w500-h500")
         .replace("w120-h120", "w500-h500")}`;
-
+    console.log("songs from yputube music", ytSongs);
     const songs =
       ytSongs?.map((s: any) => ({
         id: s.videoId,
@@ -55,11 +62,11 @@ export const search = async (req:Request, res:Response) => {
         video: !s.thumbnails?.[0]?.url.includes("https://lh3.googleusercontent.com"),
         image: s.thumbnails?.[s.thumbnails.length - 1]
           ? [
-              {
-                quality: "500x500",
-                url: normalizeImageUrl(s.thumbnails[s.thumbnails.length - 1].url),
-              },
-            ]
+            {
+              quality: "500x500",
+              url: normalizeImageUrl(s.thumbnails[s.thumbnails.length - 1].url),
+            },
+          ]
           : [],
         source: "youtube",
         downloadUrl: [
@@ -69,7 +76,7 @@ export const search = async (req:Request, res:Response) => {
           },
         ],
       })) || [];
-
+    console.log("Songs from youtube", yt2Songs);
     const songs2 =
       yt2Songs?.results
         ?.filter((result: any) => result.type === "Video")
@@ -83,11 +90,11 @@ export const search = async (req:Request, res:Response) => {
           video: !s.thumbnails?.[0]?.url.includes("https://lh3.googleusercontent.com"),
           image: s.thumbnails?.[s.thumbnails.length - 1]
             ? [
-                {
-                  quality: "500x500",
-                  url: normalizeImageUrl(s.thumbnails[s.thumbnails.length - 1].url),
-                },
-              ]
+              {
+                quality: "500x500",
+                url: normalizeImageUrl(s.thumbnails[s.thumbnails.length - 1].url),
+              },
+            ]
             : [],
           source: "youtube",
           downloadUrl: [
@@ -102,8 +109,15 @@ export const search = async (req:Request, res:Response) => {
       total: songs.length + songs2.length,
       results: [...songs2, ...songs],
     };
+    try {
+      await redisClient.set(key, JSON.stringify(payload));
+      console.log('Successfully saved to Redis');
 
-     redisClient.set(key, JSON.stringify(payload));
+    } catch (error) {
+      console.error('Redis error:', error);
+
+    }
+    //  redisClient.set(key, JSON.stringify(payload));
 
     return res.status(200).json({
       success: true,
