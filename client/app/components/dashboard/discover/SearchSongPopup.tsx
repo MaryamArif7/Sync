@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect, useState, useCallback } from "react";
-import { Search } from "lucide-react";
+import { Search ,Plus } from "lucide-react";
 import axios from "axios";
 import parse from "html-react-parser";
 import useDebounce from "../../../hooks/useDebounce";
@@ -138,6 +138,9 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                     <p className="font-medium text-gray-400 truncate">
                       {song.artists?.primary?.[0]?.name || "Unknown"}
                     </p>
+                  </div>
+                  <div>
+                    
                   </div>
                 </label>
               ))}
