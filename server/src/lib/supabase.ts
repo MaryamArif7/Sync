@@ -7,4 +7,4 @@ if (!supabaseKey) {
   throw new Error('SUPABASE_KEY  is required')
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey)

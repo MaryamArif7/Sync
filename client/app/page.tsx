@@ -1,8 +1,18 @@
+"use client";
 import { Playlists } from "./components/Hero/Playlists";
 import { Room } from "./components/Hero/Room";
 import { Lyrics } from "./components/Hero/Lyrics";
-
+import { useState } from "react";
+import { Login } from "./components/common/login";
 export default function Home() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const handleLogin = () => {
+    setIsOpen(true);
+  };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050209]">
       <div className="absolute inset-0 bg-gradient-to-b from-purple-950/30 via-[#050209] to-[#050209]" />
@@ -31,24 +41,32 @@ export default function Home() {
                 Listen <br /> Together,
               </span>
               <br />
-              <span className="">
-                Anywhere
-              </span>
+              <span className="">Anywhere</span>
             </h1>
 
-            <p className="text-lg text-[#8c8c8c] mb-8">
+            <p className="text-lg text-[#8c8c8c] mb-4">
               Stream any song, generate AI playlists, and create shared
               listening rooms with friends across the globe.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <button className="px-4 py-4 rounded-full bg-black-950/50 text-white  shadow-[0_0_15px_rgba(236,72,153,0.5)] hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300 text-white rounded-full font-semibold hover:shadow-[0_0_40px_rgba(179,102,255,0.6)] transition-all">
-                Start Listening 
+                Start Listening
               </button>
               <button className="px-8 py-4 bg-[#0f0a1f]/80 backdrop-blur-sm border border-[#2e2044] text-white rounded-full font-semibold hover:border-[#b366ff]/50 transition-all">
                 Create a Room
               </button>
             </div>
+            <p className="text-sm  mb-4">
+              Already Have an Accoun?{" "}
+              <button
+                onClick={handleLogin}
+                className="text-[#b366ff] hover:text-[#c488ff] underline-offset-4 hover:underline font-medium transition-colors"
+              >
+                Login
+              </button>
+            </p>
+            {isOpen && <Login />}
           </div>
 
           <div className="hidden lg:block relative w-[500px] h-[600px]">
@@ -75,6 +93,7 @@ export default function Home() {
           backgroundSize: "40px 40px",
         }}
       />
+      {isOpen && <Login onClose={handleClose} />}
     </section>
   );
 }
