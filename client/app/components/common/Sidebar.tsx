@@ -59,35 +59,50 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
           <div className="mb-12 lg:text-center">
             <span className="text-2xl font-bold text-white ">Sync</span>
           </div>
-
-          <nav className="space-y-1" role="navigation">
-            {LINKS.map(({ name, href, icon: Icon }) => {
-              const isActive = pathname === href;
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={closeSidebar}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
-                    isActive
-                      ? " text-white font-semibold shadow-[0_0_25px_rgba(236,72,153,0.8)]"
-                      : "text-gray-400 hover:text-white hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]"
-                  }`}
-                >
-                  <Icon
-                    className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+          <div className="mb-6 pb-6 border-b border-white/10">
+            <nav className="space-y-1" role="navigation">
+              {LINKS.map(({ name, href, icon: Icon }) => {
+                const isActive = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={closeSidebar}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden ${
                       isActive
-                        ? "text-white drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"
-                        : "text-gray-400 group-hover:text-pink-400 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.6)]"
+                        ? " text-white font-semibold shadow-[0_0_25px_rgba(236,72,153,0.8)]"
+                        : "text-gray-400 hover:text-white hover:shadow-[0_0_20px_rgba(236,72,153,0.3)]"
                     }`}
-                  />
-                  <span className="text-sm relative z-10 transition-all duration-300">
-                    {name}
-                  </span>
-                </Link>
-              );
-            })}
-          </nav>
+                  >
+                    <Icon
+                      className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+                        isActive
+                          ? "text-white drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"
+                          : "text-gray-400 group-hover:text-pink-400 group-hover:scale-110 group-hover:drop-shadow-[0_0_6px_rgba(236,72,153,0.6)]"
+                      }`}
+                    />
+                    <span className="text-sm relative z-10 transition-all duration-300">
+                      {name}
+                    </span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+          <div className="flex items-center gap-3 mt-52">
+            <div className="relative">
+              <div className="w-10 h-10 rounded-full bg-black/30 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.3)]">
+                <span className="text-sm font-bold text-white">JD</span>
+              </div>
+          
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-semibold text-white truncate">
+                Maryam 
+              </h3>
+              <p className="text-xs text-gray-400 truncate">Premium</p>
+            </div>
+          </div>
         </div>
 
         <div className="p-6 border-t border-white/10">
