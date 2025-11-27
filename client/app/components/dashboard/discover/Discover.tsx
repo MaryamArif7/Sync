@@ -2,8 +2,18 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import axios from "axios";
-import { Player } from "../../common/Player";
 import { SearchSongPopup } from "../discover/SearchSongPopup";
+import {
+  Users,
+  MessageSquare,
+  Share2,
+  Link2,
+  Settings,
+  Crown,
+  Volume2,
+  MoreVertical,
+  ChevronDown,
+} from "lucide-react";
 import {
   IoMdPause,
   IoMdPlay,
@@ -16,17 +26,60 @@ export const Discover = () => {
   const [activeTab, setActiveTab] = useState("queue");
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState("Maryam's Room");
+  const rooms = [
+    "Maryam's Room",
+    "Chill Vibes Room",
+    "K-Pop Lounge",
+    "Study Session",
+  ];
 
+  const participants = [
+    { id: 1, name: "Maryam", avatar: "M", isHost: true, isSpeaking: false },
+    { id: 2, name: "Alex", avatar: "A", isHost: false, isSpeaking: true },
+    { id: 3, name: "Sarah", avatar: "S", isHost: false, isSpeaking: false },
+  ];
   return (
-    <div className="">
-      <div className=" flex justify-between items-center w-72 border border-[#2e2044] rounded-3xl p-3 hover:border-[#ff9068]/50 transition-all hover:scale-[1.1] duration-300 shadow-[0_0_5px_rgba(236,72,153,0.5)]">
-        <input
-          className=" border-none focus:outline-none text-sm"
-          type="text"
-          placeholder="Search Any Song Here"
-          onClick={() => setOpen(true)}
-        />
-        <Search className="w-5 h-5" />
+    <div className="max-w-4xl">
+      <div className="flex items-center justify-between mb-2 gap-6">
+        <div className="flex justify-between items-center w-72 border border-[#2e2044] rounded-3xl p-3 hover:border-[#ff9068]/50 transition-all hover:scale-[1.1] duration-300 shadow-[0_0_5px_rgba(236,72,153,0.5)]">
+          <input
+            className="border-none focus:outline-none text-sm bg-transparent"
+            type="text"
+            placeholder="Search Any Song Here"
+            onClick={() => setOpen(true)}
+          />
+          <Search className="w-5 h-5" />
+        </div>
+        <div className="relative">
+          <div className="flex items-center gap-2">
+            <select
+              value={selectedRoom}
+              onChange={(e) => setSelectedRoom(e.target.value)}
+              className="text-xl font-bold  border focus:outline-none cursor-pointer appearance-none pr-8"
+            >
+              {rooms.map((room) => (
+                <option key={room} value={room} className="bg-black text-white">
+                  {room}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              size={20}
+              className="absolute right-0 top-1 pointer-events-none text-purple-400"
+            />
+          </div>
+          <p className="text-gray-400 text-xs flex items-center gap-2 mt-1">
+            <span className="flex items-center justify-center">
+              <Users size={12} />
+              {participants.length} listeners
+            </span>
+          
+            <button className="px-3 py-2 bg-[#0a0614]/50 hover:bg-[#0a0614]/70 rounded-xl flex items-center gap-2 transition-all border border-white/10">
+              <Link2 size={16} />
+            </button>
+          </p>
+        </div>
       </div>
       {open && <SearchSongPopup onClose={() => setOpen(false)} />}
       <div className=" bg-black text-white p-4 flex gap-6 max-w-4xl">
@@ -108,6 +161,19 @@ export const Discover = () => {
             >
               Lyrics
               {activeTab === "lyrics" && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-600"></div>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab("Listeners")}
+              className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
+                activeTab === "Listeners"
+                  ? "text-white"
+                  : "text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              Listeners
+              {activeTab === "Listeners" && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-600"></div>
               )}
             </button>
