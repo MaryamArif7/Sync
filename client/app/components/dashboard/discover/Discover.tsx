@@ -41,7 +41,7 @@ export const Discover = () => {
   ];
   return (
     <div className="max-w-4xl">
-      <div className="flex items-center justify-between mb-2 gap-6">
+      <div className="flex items-center justify-between gap-6">
         <div className="flex justify-between items-center w-72 border border-[#2e2044] rounded-3xl p-3 hover:border-[#ff9068]/50 transition-all hover:scale-[1.1] duration-300 shadow-[0_0_5px_rgba(236,72,153,0.5)]">
           <input
             className="border-none focus:outline-none text-sm bg-transparent"
@@ -51,38 +51,48 @@ export const Discover = () => {
           />
           <Search className="w-5 h-5" />
         </div>
+        <div className="flex items-center gap-4">
+          <button className="px-4 py-2  rounded-xl flex items-center gap-2 transition-all border border-purple-400/20">
+            <Link2 size={16} />
+            Invite friends
+          </button>
+        </div>
         <div className="relative">
-          <div className="flex items-center gap-2">
+          <div className="relative inline-block">
             <select
               value={selectedRoom}
               onChange={(e) => setSelectedRoom(e.target.value)}
-              className="text-xl font-bold  border focus:outline-none cursor-pointer appearance-none pr-8"
+              className="text-lg font-semibold bg-transparent border border-white/10 rounded-2xl px-4 py-2 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
             >
               {rooms.map((room) => (
-                <option key={room} value={room} className="bg-black text-white">
+                <option
+                  key={room}
+                  value={room}
+                  className="bg-[#0a0614] text-white"
+                >
                   {room}
                 </option>
               ))}
             </select>
             <ChevronDown
-              size={20}
-              className="absolute right-0 top-1 pointer-events-none text-purple-400"
+              size={18}
+              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-purple-400/70"
             />
           </div>
-          <p className="text-gray-400 text-xs flex items-center gap-2 mt-1">
+          {/* <p className="text-gray-400 text-xs flex items-center justify-between  ">
             <span className="flex items-center justify-center">
               <Users size={12} />
               {participants.length} listeners
             </span>
-          
+
             <button className="px-3 py-2 bg-[#0a0614]/50 hover:bg-[#0a0614]/70 rounded-xl flex items-center gap-2 transition-all border border-white/10">
               <Link2 size={16} />
             </button>
-          </p>
+          </p> */}
         </div>
       </div>
       {open && <SearchSongPopup onClose={() => setOpen(false)} />}
-      <div className=" bg-black text-white p-4 flex gap-6 max-w-4xl">
+      <div className=" bg-black text-white pt-4  flex gap-6 max-w-4xl">
         <div className="flex-1 bg-[#0a0614]/30 rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="w-52 h-52 bg-black rounded-3xl flex items-center justify-center mb-1 border border-white/10 relative overflow-hidden">
             <img src="./bg-1.webp" />
