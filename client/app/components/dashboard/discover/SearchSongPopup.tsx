@@ -23,7 +23,7 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [songs, setSongs] = useState<searchSongResult | null>(null);
-  
+  const [selectedSong,setSelectedSong]=useState(null);
   const { currentSong } = usePlayerContext();
 
   useEffect(() => {
@@ -84,7 +84,21 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   }, []);
 
   const handleSearch = useDebounce(search);
-
+  const handlerAddToQueue=async()=>{
+    try{
+      const res=await axios.post('http://localhost:5000/addToQueue',{
+        song:selectedSong,
+      }
+     
+      )
+       if(res.status===200){
+         console.log("song has been added to the Queue");
+       }
+    }
+    catch(e){
+      console.log("Error in Adding song to the Queue");
+    }
+  }
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-start justify-center pt-[15vh]">
       <div ref={searchRef} className="w-full max-w-2xl mx-4">
@@ -138,6 +152,11 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                     <p className="font-medium text-gray-400 truncate">
                       {song.artists?.primary?.[0]?.name || "Unknown"}
                     </p>
+                  </div>
+                  <div>
+                    <button onClick={handlerAddToQueue}>
+                      Add To Queue
+                    </button>
                   </div>
                   <div>
                     
