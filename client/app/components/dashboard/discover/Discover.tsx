@@ -28,41 +28,37 @@ export const Discover = () => {
   const [open, setOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState("Maryam's Room");
   const rooms = [
-    "Maryam's Room",
+    "Maryam",
     "Chill Vibes Room",
     "K-Pop Lounge",
     "Study Session",
   ];
 
-  const participants = [
-    { id: 1, name: "Maryam", avatar: "M", isHost: true, isSpeaking: false },
-    { id: 2, name: "Alex", avatar: "A", isHost: false, isSpeaking: true },
-    { id: 3, name: "Sarah", avatar: "S", isHost: false, isSpeaking: false },
-  ];
+  
   return (
     <div className="max-w-4xl">
-      <div className="flex items-center justify-between gap-6">
-        <div className="flex justify-between items-center w-72 border border-[#2e2044] rounded-3xl p-3 hover:border-[#ff9068]/50 transition-all hover:scale-[1.1] duration-300 shadow-[0_0_5px_rgba(236,72,153,0.5)]">
+      <div className="flex items-center justify-between gap-6 mb-2">
+        <div className="bg-black flex justify-between items-center w-80 border border-white/10 rounded-2xl px-4 py-3 group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300 ">
           <input
-            className="border-none focus:outline-none text-sm bg-transparent"
+            className="flex-1 text-sm bg-black focus:outline-none placeholder:text-gray-500"
             type="text"
-            placeholder="Search Any Song Here"
+            placeholder="Search any song..."
             onClick={() => setOpen(true)}
+            readOnly
           />
-          <Search className="w-5 h-5" />
+          <Search className="w-4 h-4 text-gray-400" />
         </div>
-        <div className="flex items-center gap-4">
-          <button className="px-4 py-2  rounded-xl flex items-center gap-2 transition-all border border-purple-400/20">
-            <Link2 size={16} />
-            Invite friends
+
+        <div className="flex items-center gap-3 ">
+           <button className="px-4 py-2.5 bg-black  rounded-xl flex items-center gap-2  transition-all border border-purple-400/20 ">
+            <Link2 size={16} className="" />
+            <span className="text-sm font-medium">Invite</span>
           </button>
-        </div>
-        <div className="relative">
-          <div className="relative inline-block">
+          <div className="relative">
             <select
               value={selectedRoom}
               onChange={(e) => setSelectedRoom(e.target.value)}
-              className="text-lg font-semibold bg-transparent border border-white/10 rounded-2xl px-4 py-2 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
+              className="text-lg font-semibold bg-black shadow-[0_0_5px_rgba(236,72,153,0.8)]  rounded-xl px-4 py-2.5 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
             >
               {rooms.map((room) => (
                 <option
@@ -76,19 +72,11 @@ export const Discover = () => {
             </select>
             <ChevronDown
               size={18}
-              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-purple-400/70"
+              className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
             />
           </div>
-          {/* <p className="text-gray-400 text-xs flex items-center justify-between  ">
-            <span className="flex items-center justify-center">
-              <Users size={12} />
-              {participants.length} listeners
-            </span>
 
-            <button className="px-3 py-2 bg-[#0a0614]/50 hover:bg-[#0a0614]/70 rounded-xl flex items-center gap-2 transition-all border border-white/10">
-              <Link2 size={16} />
-            </button>
-          </p> */}
+         
         </div>
       </div>
       {open && <SearchSongPopup onClose={() => setOpen(false)} />}
