@@ -16,6 +16,7 @@ client/.next/
 client/out/
 client/build/
 server/.env
+server/dist
 .next/
 out/
 build/
