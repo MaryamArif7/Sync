@@ -38,7 +38,7 @@ interface CustomSocket extends Socket {
   }; 
   roomInfo?: { roomId: string; _id: string; progress: number }; 
 }
-redisClient.connect().then(()=>{{
+redisClient.connect().then(()=>{
   const io=new Server(server,{
     cors:cors,
     adapter:createAdapter(redisClient),
@@ -56,7 +56,7 @@ redisClient.connect().then(()=>{{
   })
 }
  
-});
+);
  mongoose
     .connect(process.env.MONGODB_URL || "")
     .then(() => {

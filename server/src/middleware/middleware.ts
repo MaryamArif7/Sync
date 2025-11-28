@@ -1,3 +1,3 @@
-export const midddleware=async(socket,next)=>{
+export const midddleware=async(socket:any,next:any)=>{
     
 }
