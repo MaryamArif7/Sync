@@ -5,8 +5,11 @@ import admin from "../firebase/firebase";
 import User from "../models/userModel";
 import redisClient from "../cache/redis";
 const jwt_secret = process.env.JWT_SECRET || "";
-export const login = async (res: Response, req: Request) => {
+export const login =async (req: Request, res: Response)=> {
     const session = req.cookies.syncId || req.headers.authorization;
+    console.log(session);
+    console.log(req.cookies);
+     console.log(req);
     if (session) {
         const decoded = jwt.verify(session, process.env.JWT_SECRET || "");
         if (decoded) {
@@ -48,6 +51,7 @@ export const setTokens = async (res: Response, alreadyUser: any,
     // url:string
     // 
 ) => {
+    const url=null;
     const accessToken = jwt.sign({ userId: alreadyUser._id }, jwt_secret, {
         expiresIn: "30d",
     });
@@ -60,8 +64,8 @@ export const setTokens = async (res: Response, alreadyUser: any,
         path: "/",
         expires: cookieExpire,
     });
-    // if(url){
-    //     return res.redirect(url+"syncId"+accessToken);
-    // }
+    if(url){
+        return res.redirect(url+"syncId"+accessToken);
+    }
     return res.json({ token: accessToken });
 }

@@ -13,15 +13,17 @@ export const Login = ({ onClose }: LoginProps) => {
     try {
       setLoader(true);
       const res = await signInWithPopup(auth, provider);
+      console.log("from login compoeent",res);
       const user = res.user;
       if (user) {
-        const response = await axios.post("/api/login", {
+        const response = await axios.post("http://localhost:5000/login", {
           token: await user.getIdToken(),
         });
-        if (response.success) {
-          await axios.post("/api/login", { token: (res.data as any)?.token });
+        console.log("res obj",response);
+        if (response.status===200) {
+          await axios.post("/api/login", { token: (response.data )?.token });
           await signOut(auth);
-          window.location.reload();
+         // window.location.reload();
         }
       }
     } catch (e) {
