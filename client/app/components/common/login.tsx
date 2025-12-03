@@ -2,6 +2,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../../config/firebase";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 interface LoginProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface LoginProps {
 
 export const Login = ({ onClose }: LoginProps) => {
   const [loader, setLoader] = useState(false);
+  const router=useRouter();
   const handleLogin = async () => {
     try {
       setLoader(true);
@@ -23,13 +25,14 @@ export const Login = ({ onClose }: LoginProps) => {
         if (response.status===200) {
           await axios.post("/api/login", { token: (response.data )?.token });
           await signOut(auth);
-         // window.location.reload();
+         router.push("/browse");
         }
       }
     } catch (e) {
       console.log(e);
     } finally {
       setLoader(false);
+
     }
   };
 
