@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Plus, Users, Music, Lock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Users, Music, Lock } from 'lucide-react';
 
 export default function MusicRoomsBrowser() {
   const [userRooms, setUserRooms] = useState([
@@ -47,181 +47,148 @@ export default function MusicRoomsBrowser() {
     }
   };
 
-  const scrollContainer = (id, direction) => {
-    const container = document.getElementById(id);
-    const scrollAmount = 400;
-    container.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
-    });
-  };
-
-  const RoomCard = ({ room, isCreateCard = false }) => {
-    if (isCreateCard) {
-      return (
-        <div
-          onClick={() => setShowCreateModal(true)}
-          className="flex-none w-48 cursor-pointer group"
-        >
-          <div className="aspect-square bg-gray-900 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center hover:border-gray-600 transition-colors mb-3">
-            <Plus size={40} className="text-gray-600 group-hover:text-gray-500 transition-colors" />
-          </div>
-          <h3 className="font-semibold text-base mb-1 truncate">Create Room</h3>
-          <p className="text-gray-400 text-sm">Start listening</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex-none w-48 cursor-pointer group">
-        <div className={`aspect-square bg-gradient-to-br ${room.color} rounded-xl mb-3 flex items-center justify-center relative overflow-hidden`}>
-          <Music size={40} className="text-white/30" />
-          {room.isPrivate && (
-            <div className="absolute top-2 right-2">
-              <Lock size={16} className="text-white/80" />
-            </div>
-          )}
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-        </div>
-        <h3 className="font-semibold text-base mb-1 truncate">{room.name}</h3>
-        <div className="flex items-center gap-1.5 text-gray-400 text-sm">
-          <Users size={12} />
-          <span>{room.members} listening</span>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-black text-white">
+      <div className="flex h-screen">
         
-        {/* Your Rooms Section */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Your Rooms</h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => scrollContainer('user-rooms', 'left')}
-                className="w-8 h-8 rounded-full bg-gray-900 hover:bg-gray-800 flex items-center justify-center transition-colors"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={() => scrollContainer('user-rooms', 'right')}
-                className="w-8 h-8 rounded-full bg-gray-900 hover:bg-gray-800 flex items-center justify-center transition-colors"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
+        {/* Left Side - Your Rooms */}
+        <div className="w-80 border-r border-gray-800 flex flex-col">
+          <div className="p-6 border-b border-gray-800">
+            <h2 className="text-xl font-bold">Your Rooms</h2>
           </div>
           
-          <div
-            id="user-rooms"
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            <RoomCard isCreateCard={true} />
-            {userRooms.map(room => (
-              <RoomCard key={room.id} room={room} />
-            ))}
-          </div>
-        </div>
-
-        {/* Featured Rooms Section */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Featured Rooms</h2>
-            <div className="flex gap-2">
-              <button
-                onClick={() => scrollContainer('featured-rooms', 'left')}
-                className="w-8 h-8 rounded-full bg-gray-900 hover:bg-gray-800 flex items-center justify-center transition-colors"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={() => scrollContainer('featured-rooms', 'right')}
-                className="w-8 h-8 rounded-full bg-gray-900 hover:bg-gray-800 flex items-center justify-center transition-colors"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-          </div>
-          
-          <div
-            id="featured-rooms"
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {featuredRooms.map(room => (
-              <RoomCard key={room.id} room={room} />
-            ))}
-          </div>
-        </div>
-
-        {/* Join Room Section */}
-        <div className="flex items-center justify-center gap-3 mt-16">
-          <div className="flex items-center gap-2 text-gray-500">
-            <div className="w-8 h-8 rounded-full border-2 border-gray-700 flex items-center justify-center">
-              <Users size={16} />
-            </div>
-          </div>
-          <input
-            type="text"
-            placeholder="Enter room Link or id"
-            className="bg-gray-900 border border-gray-800 rounded-full px-5 py-2.5 w-80 focus:outline-none focus:border-gray-700 transition-colors text-sm"
-          />
-          <button className="bg-white text-black px-6 py-2.5 rounded-full font-medium hover:bg-gray-200 transition-colors text-sm">
-            Join
-          </button>
-        </div>
-
-        {/* Create Room Modal */}
-        {showCreateModal && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-900 rounded-2xl p-6 max-w-md w-full">
-              <h2 className="text-2xl font-bold mb-5">Create Room</h2>
-              
-              <input
-                type="text"
-                placeholder="Room name"
-                value={newRoomName}
-                onChange={(e) => setNewRoomName(e.target.value)}
-                className="w-full bg-black border border-gray-800 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-gray-700 transition-colors"
-              />
-              
-              <label className="flex items-center gap-3 mb-6 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isPrivate}
-                  onChange={(e) => setIsPrivate(e.target.checked)}
-                  className="w-5 h-5 rounded"
-                />
-                <span className="text-gray-300">Make room private</span>
-              </label>
-              
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    setShowCreateModal(false);
-                    setNewRoomName('');
-                    setIsPrivate(false);
-                  }}
-                  className="flex-1 bg-gray-800 hover:bg-gray-700 rounded-lg py-2.5 font-medium transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleCreateRoom}
-                  className="flex-1 bg-white text-black hover:bg-gray-200 rounded-lg py-2.5 font-medium transition-colors"
-                >
-                  Create
-                </button>
+          <div className="flex-1 overflow-y-auto p-4">
+            {/* Create Room Button */}
+            <div
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center gap-4 p-4 rounded-lg bg-gray-900 border-2 border-dashed border-gray-700 hover:border-gray-600 cursor-pointer mb-3 transition-colors"
+            >
+              <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">
+                <Plus size={24} className="text-gray-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Create Room</h3>
+                <p className="text-sm text-gray-400">Start listening</p>
               </div>
             </div>
+
+            {/* User Rooms List */}
+            {userRooms.map(room => (
+              <div
+                key={room.id}
+                className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-900 cursor-pointer mb-2 transition-colors group"
+              >
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}>
+                  <Music size={20} className="text-white/50" />
+                  {room.isPrivate && (
+                    <div className="absolute -top-1 -right-1 bg-gray-900 rounded-full p-1">
+                      <Lock size={10} className="text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold truncate">{room.name}</h3>
+                  <div className="flex items-center gap-1.5 text-gray-400 text-sm">
+                    <Users size={12} />
+                    <span>{room.members}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+
+        {/* Right Side - Featured Rooms */}
+        <div className="flex-1 flex flex-col">
+          <div className="p-6 border-b border-gray-800">
+            <h2 className="text-xl font-bold">Featured Rooms</h2>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {featuredRooms.map(room => (
+                <div key={room.id} className="cursor-pointer group">
+                  <div className={`aspect-square bg-gradient-to-br ${room.color} rounded-xl mb-3 flex items-center justify-center relative overflow-hidden`}>
+                    <Music size={40} className="text-white/30" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                  </div>
+                  <h3 className="font-semibold text-base mb-1 truncate">{room.name}</h3>
+                  <div className="flex items-center gap-1.5 text-gray-400 text-sm">
+                    <Users size={12} />
+                    <span>{room.members} listening</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Join Room Section */}
+          <div className="p-6 border-t border-gray-800">
+            <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center gap-2 text-gray-500">
+                <div className="w-8 h-8 rounded-full border-2 border-gray-700 flex items-center justify-center">
+                  <Users size={16} />
+                </div>
+              </div>
+              <input
+                type="text"
+                placeholder="Enter room Link or id"
+                className="bg-gray-900 border border-gray-800 rounded-full px-5 py-2.5 w-80 focus:outline-none focus:border-gray-700 transition-colors text-sm"
+              />
+              <button className="bg-white text-black px-6 py-2.5 rounded-full font-medium hover:bg-gray-200 transition-colors text-sm">
+                Join
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      {/* Create Room Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 rounded-2xl p-6 max-w-md w-full">
+            <h2 className="text-2xl font-bold mb-5">Create Room</h2>
+            
+            <input
+              type="text"
+              placeholder="Room name"
+              value={newRoomName}
+              onChange={(e) => setNewRoomName(e.target.value)}
+              className="w-full bg-black border border-gray-800 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-gray-700 transition-colors"
+            />
+            
+            <label className="flex items-center gap-3 mb-6 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isPrivate}
+                onChange={(e) => setIsPrivate(e.target.checked)}
+                className="w-5 h-5 rounded"
+              />
+              <span className="text-gray-300">Make room private</span>
+            </label>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowCreateModal(false);
+                  setNewRoomName('');
+                  setIsPrivate(false);
+                }}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 rounded-lg py-2.5 font-medium transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateRoom}
+                className="flex-1 bg-white text-black hover:bg-gray-200 rounded-lg py-2.5 font-medium transition-colors"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
