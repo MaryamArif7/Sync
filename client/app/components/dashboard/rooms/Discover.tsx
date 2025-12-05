@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import axios from "axios";
-import { SearchSongPopup } from "../discover/SearchSongPopup";
+import { SearchSongPopup } from "./SearchSongPopup";
 import {
   Users,
   MessageSquare,

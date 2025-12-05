@@ -6,5 +6,19 @@ const roomSchema=new mongoose.Schema({
         unique:true,
         maxLength:8,
     },
+    featured:{
+        type:String,
+        enum:["yes","no"], 
+        required:true,
+    },
+    createdBy:{
+     type:mongoose.Schema.Types.ObjectId,
+     ref:"User",
+     required:true,
+    },
+    listeners:{
+        type:Number,
+
+    }
 },{timestamps:true});
 export const Room=mongoose.model("Room",roomSchema);
