@@ -73,7 +73,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
       <div className="flex-1 overflow-y-auto p-4">
         <div
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-b from-black to-black/95 border-2 border-dashed border-gray-900 hover:border-gray-600 cursor-pointer mb-3 transition-colors"
+          className="flex items-center gap-4 p-4 rounded-lg bg-[#0a0614]/80 backdrop-blur-xl border border-[#2e2044] border-dashed  hover:border-gray-600 cursor-pointer mb-3 transition-colors"
         >
           <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">
             <Plus size={24} className="text-gray-500" />
@@ -99,12 +99,13 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
                 </div>
               )}
             </div>
-            <div className="flex-1 min-w-0">
+            <div className="flex gap-18">
               <h3 className="font-semibold truncate">{room?.roomId}</h3>
               <div className="flex items-center gap-1.5 text-gray-400 text-sm">
                 <Users size={12} />
-                <span>{room?.listeners}</span>
+                  <span>{room?.listeners}</span>
               </div>
+            
             </div>
           </div>
         ))}
