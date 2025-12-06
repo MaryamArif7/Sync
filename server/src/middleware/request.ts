@@ -7,7 +7,7 @@ export interface authRequest extends Request {
     userId?:string;
 }
 export const authMiddleware=(req:authRequest,_res:Response,next:NextFunction)=>{
-    const session=req.cookies.syncIdR || req.headers.authorization;
+    const session=req.cookies.syncId || req.headers.authorization;
     if(!session){
         throw new Error("Login Required")
     }

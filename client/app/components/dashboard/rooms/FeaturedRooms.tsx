@@ -16,6 +16,7 @@ interface FeaturedRoomsProps {
 
 export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
   const [roomInput, setRoomInput] = useState("");
+   const [featuredRooms, setFeaturedRooms] = useState<Room[]>(rooms);
 
   const handleJoinRoom = () => {
     if (roomInput.trim()) {
@@ -31,12 +32,12 @@ export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
 
       <div className="flex-1 overflow-y-auto p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {rooms.length === 0 ? (
+          {featuredRooms.length === 0 ? (
             <p className="text-gray-400 col-span-full text-center py-8">
               No featured rooms available
             </p>
           ) : (
-            rooms.map((room) => (
+            featuredRooms.map((room) => (
               <div key={room.id} className="cursor-pointer group">
                 <div
                   className={`aspect-square bg-gradient-to-br ${room.color} rounded-xl mb-3 flex items-center justify-center relative overflow-hidden`}

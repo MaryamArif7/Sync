@@ -5,11 +5,7 @@ export const createRoom = async (req: authRequest, res: Response) => {
   try {
     const createdBy=req.userId;
     const { featured, roomId } = req.body;
-    // console.log("auth request",authRequest);
-    console.log(req);
-    console.log(req.userId);
-    console.log(featured);
-    console.log(roomId);
+ 
     if (!roomId || !createdBy || !featured) {
       return res.status(400).json({
         success: false,

@@ -6,11 +6,14 @@ import { addToQueue } from "../functions/addToQueue";
 import { getRoom } from "../functions/getRooms";
 import { createRoom } from "../functions/createRoom";
 import { featuredRooms } from "../functions/featuredRooms";
+import { authMiddleware } from "../middleware/request";
+
 const router=express.Router();
 router.get("/topSongs",topSongs);
 router.get("/search",search);
 router.post("/login",login);
 router.post("/addToQueue",addToQueue);
+router.use(authMiddleware);
 router.get("/roomsuser",getRoom);
 router.get("/roomsfeatured",featuredRooms);
 router.post("/createroom",createRoom);

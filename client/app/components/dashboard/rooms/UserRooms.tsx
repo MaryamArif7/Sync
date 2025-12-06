@@ -40,7 +40,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
         {
           withCredentials: true,
           headers: {
-            Cookie: `syncIdR=${syncId}`,
+            Cookie: `syncId=${syncId}`,
           },
         }
       );

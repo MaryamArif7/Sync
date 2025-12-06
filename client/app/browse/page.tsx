@@ -18,7 +18,7 @@ export default async function MusicRoomsBrowser() {
      axios
        .get(`${API_BASE_URL}/roomsuser`, {
          withCredentials: true,
-         headers: { Cookie: `syncIdR=${syncId}` },
+         headers: { Cookie: `syncId=${syncId}` },
        })
        .catch((err) => {
          console.error("Failed to fetch user rooms:", err);
@@ -28,19 +28,20 @@ export default async function MusicRoomsBrowser() {
      axios
        .get(`${API_BASE_URL}/roomsfeatured`, {
          withCredentials: true,
-         headers: { Cookie: `syncIdR=${syncId}` },
+         headers: { Cookie: `syncId=${syncId}` },
        })
        .catch((err) => {
          console.error("Failed to fetch featured rooms:", err);
          return { data: [] };
        }),
    ]);
-
+console.log("User rooms response:", userRoomsRes.data);
+console.log("Featured rooms response:", featuredRoomsRes.data);
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="flex h-screen">
-        <UserRooms rooms={userRoomsRes.data || []} syncId={syncId} />
-        <FeaturedRooms rooms={featuredRoomsRes.data || []} syncId={syncId} />
+        <UserRooms rooms={userRoomsRes.data?.data || []} syncId={syncId} />
+        <FeaturedRooms rooms={featuredRoomsRes.data?.data || []} syncId={syncId} />
       </div>
     </div>
   );
