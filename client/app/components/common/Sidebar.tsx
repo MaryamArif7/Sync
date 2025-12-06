@@ -13,8 +13,7 @@ import {
 } from "lucide-react";
 
 const LINKS = [
-  { name: "Discover", href: "/Discover", icon: LayoutDashboard },
-  { name: "Rooms", href: "/Discover/rooms", icon: DoorOpen },
+  { name: "Rooms", href: "/browse", icon: DoorOpen },
   { name: "Playlists", href: "/Discover/playlists", icon: ListMusic },
 ];
 
@@ -23,6 +22,11 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname();
   const toggleSidebar = () => setIsOpen((prev) => !prev);
   const closeSidebar = () => setIsOpen(false);
+  
+ 
+  const roomIdMatch = pathname.match(/\/Discover\/rooms\/([^\/]+)/);
+  const currentRoomId = roomIdMatch ? roomIdMatch[1] : null;
+
   return (
     <div className="flex h-screen overflow-hidden">
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-sm shadow-lg">
@@ -62,7 +66,10 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
           <div className="mb-6 pb-6 border-b border-white/10">
             <nav className="space-y-1" role="navigation">
               {LINKS.map(({ name, href, icon: Icon }) => {
-                const isActive = pathname === href;
+              
+                const isActive = pathname === href || 
+                  (name === "Rooms" && pathname.startsWith("/Discover/rooms"));
+                
                 return (
                   <Link
                     key={href}
@@ -88,13 +95,14 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
                 );
               })}
             </nav>
+            
+           
           </div>
           <div className="flex items-center gap-3 mt-64">
             <div className="relative">
               <div className="w-10 h-10 rounded-full bg-black/30 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.3)]">
                 <span className="text-sm font-bold text-white">JD</span>
               </div>
-          
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-semibold text-white truncate">
@@ -107,7 +115,6 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
 
         <div className="p-6 border-t border-white/10">
           <button
-            // onClick={logout}
             className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:text-white  rounded-xl transition-all duration-300 group relative overflow-hidden  hover:shadow-[0_0_25px_rgba(236,72,153,0.8)]"
           >
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -121,10 +128,6 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-32">
           {children}
         </main>
-
-        {/* <div className="h-[93px] fixed bottom-0 left-0 lg:left-64 right-0 z-30  to-transparent backdrop-blur-xl border-t border-white/10 ">
-          <Player />
-        </div> */}
       </div>
     </div>
   );

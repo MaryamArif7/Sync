@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Users, Music } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 interface Room {
   id: string | number;
   roomId: string;
@@ -17,11 +17,11 @@ interface FeaturedRoomsProps {
 export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
   const [roomInput, setRoomInput] = useState("");
   const [featuredRooms, setFeaturedRooms] = useState<Room[]>(rooms);
-
+ const router = useRouter();
   const handleJoinRoom = (roomId?: string) => {
-    const room = roomId || roomInput.trim();
+     const room = roomId || roomInput.trim();
     if (room) {
-      console.log("Joining room:", room);
+      router.push(`Discover/rooms/${room}`);
     }
   };
 
