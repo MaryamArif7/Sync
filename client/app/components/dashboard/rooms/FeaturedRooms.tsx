@@ -4,8 +4,8 @@ import { Users, Music } from "lucide-react";
 
 interface Room {
   id: string | number;
- roomId: string;
-listeners: number;
+  roomId: string;
+  listeners: number;
   color: string;
 }
 
@@ -16,7 +16,7 @@ interface FeaturedRoomsProps {
 
 export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
   const [roomInput, setRoomInput] = useState("");
-   const [featuredRooms, setFeaturedRooms] = useState<Room[]>(rooms);
+  const [featuredRooms, setFeaturedRooms] = useState<Room[]>(rooms);
 
   const handleJoinRoom = () => {
     if (roomInput.trim()) {
@@ -30,34 +30,27 @@ export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
         <h2 className="text-xl font-bold">Featured Rooms</h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {featuredRooms.length === 0 ? (
-            <p className="text-gray-400 col-span-full text-center py-8">
-              No featured rooms available
-            </p>
-          ) : (
-            featuredRooms.map((room) => (
-              <div key={room.id} className="cursor-pointer group">
-                <div
-                  className={`aspect-square bg-gradient-to-br ${room.color} rounded-xl mb-3 flex items-center justify-center relative overflow-hidden`}
-                >
-                  <Music size={40} className="text-white/30" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                </div>
-                <h3 className="font-semibold text-base mb-1 truncate">
-                  {room?.roomId}
-                </h3>
-                <div className="flex items-center gap-1.5 text-gray-400 text-sm">
-                  <Users size={12} />
-                  <span>{room.listeners} listening</span>
-                </div>
-              </div>
-            ))
-          )}
+<div className="flex-1 overflow-y-auto p-6">
+  <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4">
+    {featuredRooms.map((room) => (
+      <div 
+        key={room.id}
+        className="break-inside-avoid mb-4 cursor-pointer group"
+        onClick={() => console.log('Joining room:', room.roomId)}
+      >
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-800 hover:border-pink-500/30 transition-all">
+          <Music size={40} className="text-pink-500/30 mb-4" />
+          <h3 className="font-semibold text-base mb-2">{room.roomId}</h3>
+          <div className="flex items-center gap-1.5 text-gray-400 text-sm">
+            <Users size={12} />
+            <span>{room.listeners} listening</span>
+          </div>
         </div>
       </div>
-
+    ))}
+  </div>
+</div>
+      {/**here  */}
       <div className="p-6 border-t border-gray-800">
         <div className="flex items-center justify-center gap-3">
           <div className="flex items-center gap-2 text-gray-500">
