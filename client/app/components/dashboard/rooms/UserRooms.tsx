@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import { Plus, Users, Music, Lock } from "lucide-react";
+import { Plus, Users, Music, Lock, ChevronRight } from "lucide-react";
 
 interface Room {
   id: string | number;
@@ -83,11 +83,10 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
             <p className="text-sm text-gray-400">Start listening</p>
           </div>
         </div>
-
         {userRooms.map((room) => (
           <div
             key={room.id}
-            className="flex items-center gap-4 p-4 rounded-lg shadow-[0_0_5px_rgba(236,72,153,0.8)]  hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group"
+            className="flex items-center gap-4 p-4 rounded-lg shadow-[0_0_5px_rgba(236,72,153,0.8)] hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group"
           >
             <div
               className={`w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
@@ -99,20 +98,28 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
                 </div>
               )}
             </div>
-            <div className="flex gap-18">
+            <div className="flex-1 min-w-0">
               <h3 className="font-semibold truncate">{room?.roomId}</h3>
               <div className="flex items-center gap-1.5 text-gray-400 text-sm">
                 <Users size={12} />
-                  <span>{room?.listeners}</span>
+                <span>{room?.listeners}</span>
               </div>
-            
             </div>
+            <button
+              className="opacity-0 group-hover:opacity-100 px-4 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium rounded transition-all"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("Joining room:", room.roomId);
+              }}
+            >
+              Join
+            </button>
           </div>
         ))}
       </div>
 
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 " >
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 ">
           <div className=" rounded-2xl p-6 max-w-md w-full border border-gray-900">
             <h2 className="text-2xl font-bold mb-5">Create Room</h2>
 
