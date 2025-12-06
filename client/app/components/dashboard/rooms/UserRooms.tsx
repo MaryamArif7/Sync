@@ -66,7 +66,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
 
   return (
     <div className="w-80  shadow-[0_0_20px_rgba(236,72,153,0.3)]  flex flex-col">
-      <div className="p-6 border-b border-gray-800">
+      <div className="p-6 border-b border-gray-800 ">
         <h2 className="text-xl font-bold">Your Rooms</h2>
       </div>
 
@@ -86,10 +86,10 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
         {userRooms.map((room) => (
           <div
             key={room.id}
-            className="flex items-center gap-4 p-4 rounded-lg shadow-[0_0_5px_rgba(236,72,153,0.8)] hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group"
+            className="mt-1 flex items-center gap-4 p-4 rounded-lg shadow-[0_0_3px_rgba(236,72,153,0.8)] hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group space-y-1"
           >
             <div
-              className={`w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
+              className={ ` w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
             >
               <Music size={20} className="text-white/50" />
               {room.featured && (
