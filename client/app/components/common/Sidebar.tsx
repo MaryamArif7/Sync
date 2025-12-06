@@ -14,7 +14,7 @@ import {
 
 const LINKS = [
   { name: "Discover", href: "/Discover", icon: LayoutDashboard },
-  // { name: "Rooms", href: "/Discover/rooms", icon: DoorOpen },
+  { name: "Rooms", href: "/Discover/rooms", icon: DoorOpen },
   { name: "Playlists", href: "/Discover/playlists", icon: ListMusic },
 ];
 

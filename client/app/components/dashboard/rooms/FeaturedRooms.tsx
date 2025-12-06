@@ -4,8 +4,8 @@ import { Users, Music } from "lucide-react";
 
 interface Room {
   id: string | number;
-  name: string;
-  members: number;
+ roomId: string;
+listeners: number;
   color: string;
 }
 
@@ -46,11 +46,11 @@ export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                 </div>
                 <h3 className="font-semibold text-base mb-1 truncate">
-                  {room.name}
+                  {room?.roomId}
                 </h3>
                 <div className="flex items-center gap-1.5 text-gray-400 text-sm">
                   <Users size={12} />
-                  <span>{room.members} listening</span>
+                  <span>{room.listeners} listening</span>
                 </div>
               </div>
             ))

@@ -5,9 +5,9 @@ import { Plus, Users, Music, Lock } from "lucide-react";
 
 interface Room {
   id: string | number;
-  name: string;
-  members: number;
-  isPrivate?: boolean;
+  roomId: string;
+  listeners: number;
+  featured: boolean;
   color: string;
 }
 
@@ -65,7 +65,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
   };
 
   return (
-    <div className="w-80 border-r border-gray-800 flex flex-col">
+    <div className="w-80  shadow-[0_0_20px_rgba(236,72,153,0.3)]  flex flex-col">
       <div className="p-6 border-b border-gray-800">
         <h2 className="text-xl font-bold">Your Rooms</h2>
       </div>
@@ -73,7 +73,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
       <div className="flex-1 overflow-y-auto p-4">
         <div
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-4 p-4 rounded-lg bg-gray-900 border-2 border-dashed border-gray-700 hover:border-gray-600 cursor-pointer mb-3 transition-colors"
+          className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-b from-black to-black/95 border-2 border-dashed border-gray-900 hover:border-gray-600 cursor-pointer mb-3 transition-colors"
         >
           <div className="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center flex-shrink-0">
             <Plus size={24} className="text-gray-500" />
@@ -87,23 +87,23 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
         {userRooms.map((room) => (
           <div
             key={room.id}
-            className="flex items-center gap-4 p-4 rounded-lg hover:bg-gray-900 cursor-pointer mb-2 transition-colors group"
+            className="flex items-center gap-4 p-4 rounded-lg shadow-[0_0_5px_rgba(236,72,153,0.8)]  hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group"
           >
             <div
               className={`w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
             >
               <Music size={20} className="text-white/50" />
-              {room.isPrivate && (
+              {room.featured && (
                 <div className="absolute -top-1 -right-1 bg-gray-900 rounded-full p-1">
                   <Lock size={10} className="text-gray-400" />
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold truncate">{room.name}</h3>
+              <h3 className="font-semibold truncate">{room?.roomId}</h3>
               <div className="flex items-center gap-1.5 text-gray-400 text-sm">
                 <Users size={12} />
-                <span>{room.members}</span>
+                <span>{room?.listeners}</span>
               </div>
             </div>
           </div>
@@ -111,8 +111,8 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
       </div>
 
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-2xl p-6 max-w-md w-full">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 " >
+          <div className=" rounded-2xl p-6 max-w-md w-full border border-gray-900">
             <h2 className="text-2xl font-bold mb-5">Create Room</h2>
 
             <input
@@ -121,7 +121,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
               value={newRoomName}
               onChange={(e) => setNewRoomName(e.target.value)}
               disabled={loading}
-              className="w-full bg-black border border-gray-800 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-gray-700 transition-colors disabled:opacity-50"
+              className="w-full bg-black border border-gray-900 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-gray-700 transition-colors disabled:opacity-50"
             />
 
             <label className="flex items-center gap-3 mb-6 cursor-pointer">
@@ -139,14 +139,14 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
               <button
                 onClick={closeModal}
                 disabled={loading}
-                className="flex-1 bg-gray-800 hover:bg-gray-700 rounded-lg py-2.5 font-medium transition-colors disabled:opacity-50"
+                className="flex-1 bg-black border border-gray-900  rounded-lg py-2.5 font-medium transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateRoom}
                 disabled={loading}
-                className="flex-1 bg-white text-black hover:bg-gray-200 rounded-lg py-2.5 font-medium transition-colors disabled:opacity-50"
+                className="flex-1 text-white bg-black shadow-[0_0_15px_rgba(236,72,153,0.8)] hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] rounded-lg py-2.5 font-medium transition-colors disabled:opacity-50"
               >
                 {loading ? "Creating..." : "Create"}
               </button>

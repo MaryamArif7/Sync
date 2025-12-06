@@ -18,6 +18,7 @@ const roomSchema=new mongoose.Schema({
     },
     listeners:{
         type:Number,
+        default:0,
 
     }
 },{timestamps:true});
