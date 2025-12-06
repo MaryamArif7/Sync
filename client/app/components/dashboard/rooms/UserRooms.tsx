@@ -70,7 +70,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
         <h2 className="text-xl font-bold">Your Rooms</h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 scrollbar-hide">
         <div
           onClick={() => setShowCreateModal(true)}
           className="flex items-center gap-4 p-4 rounded-lg bg-[#0a0614]/80 backdrop-blur-xl border border-[#2e2044] border-dashed  hover:border-gray-600 cursor-pointer mb-3 transition-colors"
@@ -86,12 +86,12 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
         {userRooms.map((room) => (
           <div
             key={room.id}
-            className="mt-1 flex items-center gap-4 p-4 rounded-lg shadow-[0_0_3px_rgba(236,72,153,0.8)] hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group space-y-1"
+            className="mt-1 flex items-center gap-4 p-4 rounded-lg  border border-gray-800 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group space-y-1"
           >
             <div
               className={ ` w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
             >
-              <Music size={20} className="text-white/50" />
+              <Music size={20} className="text-pink-500/30" />
               {room.featured && (
                 <div className="absolute -top-1 -right-1 bg-gray-900 rounded-full p-1">
                   <Lock size={10} className="text-gray-400" />
@@ -106,7 +106,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
               </div>
             </div>
             <button
-              className="opacity-0 group-hover:opacity-100 px-4 py-1.5 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium rounded transition-all"
+              className="opacity-0 group-hover:opacity-100 px-4 py-1.5 rounded-full bg-black-950/50 text-white  shadow-[0_0_15px_rgba(236,72,153,0.5)] hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300 text-white rounded-full font-semibold hover:shadow-[0_0_40px_rgba(179,102,255,0.6)] transition-all"
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("Joining room:", room.roomId);
