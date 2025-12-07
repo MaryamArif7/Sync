@@ -83,7 +83,7 @@ export const Discover = () => {
       <div className=" bg-black text-white pt-4  flex gap-6 max-w-4xl">
         <div className="flex-1 bg-[#0a0614]/30 rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="w-52 h-52 bg-black rounded-3xl flex items-center justify-center mb-1 border border-white/10 relative overflow-hidden">
-            <img src="./bg-1.webp" />
+            <img src="/bg-1.webp" />
           </div>
 
           <div className="text-center mb-2">
