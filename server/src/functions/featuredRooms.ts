@@ -1,14 +1,16 @@
 
 import { Request, Response } from "express";
 import { Room } from "../models/roomModel";
-
-export const featuredRooms = async (req: Request, res: Response) => {
+import { authRequest } from "../middleware/request";
+export const featuredRooms = async (req:authRequest, res: Response) => {
   try {
-  
-    const rooms = await Room.find({ featured: "yes" })
+     const userId = req.userId;
+    const rooms = await Room.find({
+      featured: "yes",
+      createdBy: { $ne: userId }
+    })
       .populate("createdBy", "-password")
       .sort({ createdAt: -1 });
-
     return res.status(200).json({
       success: true,
       message: "Featured rooms fetched successfully",
