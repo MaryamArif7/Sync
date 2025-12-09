@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { Plus, Users, Music, Lock, ChevronRight } from "lucide-react";
 import { useUserContext } from "@/app/store/UserContext";
 interface Room {
@@ -25,6 +26,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
   const [isPrivate, setIsPrivate] = useState(false);
   const [loading, setLoading] = useState(false);
   const { roomId, Rooms, setRooms, setRoomId } = useUserContext();
+const router=useRouter();
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
 
@@ -66,6 +68,12 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
     setNewRoomName("");
     setIsPrivate(false);
   };
+  const handleJoinRoom=(roomId?:string)=>{
+    if(roomId){
+      router.push(`Discover/rooms/${roomId}`)
+      setRoomId(roomId);
+    }
+  }
 
   return (
     <div className="w-80  shadow-[0_0_20px_rgba(236,72,153,0.3)]  flex flex-col">
@@ -112,6 +120,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
               className="opacity-0 group-hover:opacity-100 px-4 py-1.5 rounded-full bg-black-950/50 text-white  shadow-[0_0_15px_rgba(236,72,153,0.5)] hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300 text-white rounded-full font-semibold hover:shadow-[0_0_40px_rgba(179,102,255,0.6)] transition-all"
               onClick={(e) => {
                 e.stopPropagation();
+                handleJoinRoom(room.roomId);
                 console.log("Joining room:", room.roomId);
               }}
             >

@@ -21,12 +21,14 @@ import {
   IoMdSkipForward,
   IoMdVolumeHigh,
 } from "react-icons/io";
+import { useUserContext } from "@/app/store/UserContext";
 export const Discover = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState("queue");
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState("Maryam's Room");
+  const {Rooms,roomId,setRoomId}=useUserContext();
+  const [selectedRoom, setSelectedRoom] = useState(roomId);
   const rooms = [
     "Maryam",
     "Chill Vibes Room",
@@ -34,7 +36,8 @@ export const Discover = () => {
     "Study Session",
   ];
 
-  
+  console.log(Rooms);
+  console.log(roomId);
   return (
     <div className="max-w-4xl">
       <div className="flex items-center justify-between gap-6 mb-2">
@@ -60,7 +63,7 @@ export const Discover = () => {
               onChange={(e) => setSelectedRoom(e.target.value)}
               className="text-lg font-semibold bg-black shadow-[0_0_5px_rgba(236,72,153,0.8)]  rounded-xl px-4 py-2.5 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
             >
-              {rooms.map((room) => (
+              {Rooms?.map((room) => (
                 <option
                   key={room}
                   value={room}
