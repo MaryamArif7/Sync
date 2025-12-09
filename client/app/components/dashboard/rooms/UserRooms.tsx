@@ -2,7 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Plus, Users, Music, Lock, ChevronRight } from "lucide-react";
-
+import { useUserContext } from "@/app/store/UserContext";
 interface Room {
   id: string | number;
   roomId: string;
@@ -24,7 +24,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
   const [newRoomName, setNewRoomName] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const { roomId, Rooms, setRooms, setRoomId } = useUserContext();
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
 
@@ -46,7 +46,10 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
       );
 
       if (res.data?.success) {
-        setUserRooms([...userRooms, res.data.data]);
+        const updatedRooms = [...userRooms, res.data.data];
+        setUserRooms(updatedRooms);
+        setRooms(updatedRooms);
+
         setNewRoomName("");
         setIsPrivate(false);
         setShowCreateModal(false);
@@ -89,7 +92,7 @@ export const UserRooms = ({ rooms, syncId }: UserRoomsProps) => {
             className="mt-1 flex items-center gap-4 p-4 rounded-lg  border border-gray-800 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group space-y-1"
           >
             <div
-              className={ ` w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
+              className={` w-12 h-12 rounded-lg bg-gradient-to-br ${room.color} flex items-center justify-center flex-shrink-0 relative`}
             >
               <Music size={20} className="text-pink-500/30" />
               {room.featured && (

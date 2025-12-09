@@ -16,8 +16,8 @@ interface UserContextType {
   setRoomId: React.Dispatch<SetStateAction<string | null>>;
   user: TUser | null;
   setUser: React.Dispatch<SetStateAction<TUser | null>>;
-  selectedRoom: string | null;
-  setSelectedRoom: React.Dispatch<SetStateAction<string | null>>;
+  Rooms: string[] | null;
+  setRooms: React.Dispatch<SetStateAction<string[] | null>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -33,7 +33,7 @@ const useUserContext = (): UserContextType => {
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [queue, setQueue] = useState<searchResults[]>([]);
   const [roomId, setRoomId] = useState<string | null>(null);
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
+const [Rooms, setRooms] = useState<string[] | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
 
   const value = useMemo(
@@ -44,10 +44,10 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setRoomId,
       user,
       setUser,
-      selectedRoom,
-      setSelectedRoom,
+      Rooms,
+    setRooms
     }),
-    [queue, roomId, user, selectedRoom]
+    [queue, roomId, user,Rooms]
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

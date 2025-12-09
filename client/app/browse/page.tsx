@@ -7,6 +7,7 @@ import { FeaturedRooms } from "../components/dashboard/rooms/FeaturedRooms";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export default async function MusicRoomsBrowser() {
+  // const {Rooms,setRooms}=useUserContext();
   const cookieStore = await cookies();
   const syncId = cookieStore.get("syncId")?.value;
 
