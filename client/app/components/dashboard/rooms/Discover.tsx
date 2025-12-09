@@ -28,14 +28,11 @@ export const Discover = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
   const {Rooms,roomId,setRoomId}=useUserContext();
-  const [selectedRoom, setSelectedRoom] = useState(roomId);
-  const rooms = [
-    "Maryam",
-    "Chill Vibes Room",
-    "K-Pop Lounge",
-    "Study Session",
-  ];
 
+const handleRoomChange=(e)=>{
+  const updatedRoomId=e.target.value;
+  setRoomId(updatedRoomId);
+}
   console.log(Rooms);
   console.log(roomId);
   return (
@@ -59,19 +56,25 @@ export const Discover = () => {
           </button>
           <div className="relative">
             <select
-              value={selectedRoom}
-              onChange={(e) => setSelectedRoom(e.target.value)}
+              value={roomId || ""}
+              onChange={handleRoomChange}
               className="text-lg font-semibold bg-black shadow-[0_0_5px_rgba(236,72,153,0.8)]  rounded-xl px-4 py-2.5 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
             >
-              {Rooms?.map((room) => (
-                <option
-                  key={room}
-                  value={room}
-                  className="bg-[#0a0614] text-white"
-                >
-                  {room}
-                </option>
-              ))}
+              {Rooms?.map((room) => {
+              
+                const roomId = typeof room === 'object' ? room.roomId : room;
+                const roomName = typeof room === 'object' ? room.roomId : room;
+                
+                return (
+                  <option
+                    key={roomId}
+                    value={roomId}
+                    className="bg-[#0a0614] text-white"
+                  >
+                    {roomName}
+                  </option>
+                );
+              })}
             </select>
             <ChevronDown
               size={18}
