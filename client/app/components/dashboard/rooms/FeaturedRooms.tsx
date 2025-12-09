@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Users, Music } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useUserContext } from "@/app/store/UserContext";
 interface Room {
   id: string | number;
   roomId: string;
@@ -17,11 +18,13 @@ interface FeaturedRoomsProps {
 export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
   const [roomInput, setRoomInput] = useState("");
   const [featuredRooms, setFeaturedRooms] = useState<Room[]>(rooms);
+  const {roomId,setRoomId}=useUserContext();
  const router = useRouter();
   const handleJoinRoom = (roomId?: string) => {
      const room = roomId || roomInput.trim();
     if (room) {
       router.push(`Discover/rooms/${room}`);
+      setRoomId(room);
     }
   };
 
