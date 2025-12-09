@@ -31,3 +31,14 @@ export interface artists {
     type: "artist";
     url: string;
 }
+export interface TUser {
+  id?: string;
+  _id: string;
+  email: string;
+  name: string;
+  imageUrl: string;
+  role?: "admin" | "listener" | string;
+  token?: string;
+  imageDelUrl?: string;
+
+}
