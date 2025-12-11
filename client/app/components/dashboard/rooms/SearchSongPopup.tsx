@@ -6,7 +6,7 @@ import parse from "html-react-parser";
 import useDebounce from "../../../hooks/useDebounce";
 import { searchSongResult } from "@/app/lib/types";
 import { usePlayerContext } from "../../../store/PlayerContext";
-
+import { useUserContext } from "@/app/store/UserContext";
 interface SearchSongPopupProps {
   onClose: () => void;
 }

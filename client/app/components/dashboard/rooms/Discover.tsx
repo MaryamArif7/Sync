@@ -21,17 +21,20 @@ import {
   IoMdSkipForward,
   IoMdVolumeHigh,
 } from "react-icons/io";
+import { useRouter } from "next/navigation";
 import { useUserContext } from "@/app/store/UserContext";
 export const Discover = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState("queue");
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const {Rooms,roomId,setRoomId}=useUserContext();
-
+  const {roomId, queue,setQueue,setRoomId,Rooms}=useUserContext();
+const router=useRouter();
 const handleRoomChange=(e)=>{
   const updatedRoomId=e.target.value;
   setRoomId(updatedRoomId);
+  router.push(`/Discover/rooms/${updatedRoomId}`);
+  
 }
   console.log(Rooms);
   console.log(roomId);
