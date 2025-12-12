@@ -1,14 +1,18 @@
 "use client";
 import { useRef, useEffect, useState, useCallback } from "react";
-import { Search ,Plus } from "lucide-react";
+import { Search, Plus, Check } from "lucide-react";
 import axios from "axios";
 import parse from "html-react-parser";
 import useDebounce from "../../../hooks/useDebounce";
 import { searchSongResult } from "@/app/lib/types";
 import { usePlayerContext } from "../../../store/PlayerContext";
 import { useUserContext } from "@/app/store/UserContext";
+import { toast } from "react-hot-toast";
+// import { cookies } from "next/headers";
+// import { redirect } from "next/navigation";
 interface SearchSongPopupProps {
   onClose: () => void;
+  onSongAdded?: () => void;
 }
 
 const formatArtistName = (artists: artists[]) => {
@@ -19,13 +23,16 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   const searchRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  
   const [loading, setLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [songs, setSongs] = useState<searchSongResult | null>(null);
-  const [selectedSong,setSelectedSong]=useState(null);
+  const [selectedSong, setSelectedSong] = useState(null);
   const { currentSong } = usePlayerContext();
-
+  const [addingToQueue, setAddingToQueue] = useState<string | null>(null);
+  const [addedSongs, setAddedSongs] = useState<Set<string>>(new Set());
+  const { roomId, queue, setQueue } = useUserContext();
+  //   const cookieStore = await cookies();
+  // const syncId = cookieStore.get("syncId")?.value;
   useEffect(() => {
     const handleCheatCodes = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -52,10 +59,10 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   const search = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       abortControllerRef.current?.abort();
-      
+
       const value = e.target.value.trim();
       setQuery(value);
-      
+
       if (!value) {
         setSongs(null);
         setLoading(false);
@@ -65,12 +72,12 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
       setLoading(true);
       const controller = new AbortController();
       abortControllerRef.current = controller;
-      
+
       const response = await axios.get(
         `http://localhost:5000/search/?name=${value}`,
         { signal: controller.signal }
       );
-      
+
       if (response.data.success) {
         setSongs(response.data as searchSongResult);
       }
@@ -84,21 +91,47 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   }, []);
 
   const handleSearch = useDebounce(search);
-  const handlerAddToQueue=async()=>{
-    try{
-      const res=await axios.post('http://localhost:5000/addToQueue',{
-        song:selectedSong,
+  const handlerAddToQueue = async (song: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!roomId) {
+      console.log("No Room Selected");
+      toast.error("Please Select a Room first");
+    }
+    try {
+      setAddingToQueue(song.id);
+      const songData = {
+        songId: song.id,
+        title: song.name,
+        artist: formatArtistName(song.artists?.primary),
+        imageUrl: song.image[song.image.length - 1]?.url,
+        roomId: roomId,
+      };
+      const res = await axios.post(
+        "http://localhost:5000/addToQueue",
+        {
+          songData,
+        }
+      );
+      if (res.status === 200) {
+        setAddedSongs((prev) => new Set([...prev, song.id]));
+        const newQueueItem = res.data.data;
+        if (setQueue) {
+          setQueue((prevQueue) => [...prevQueue, newQueueItem]);
+        }
+
+        // if (onSongAdded) {
+        //   onSongAdded();
+        // }
+        console.log("song has been added to the Queue");
       }
-     
-      )
-       if(res.status===200){
-         console.log("song has been added to the Queue");
-       }
+    } catch (e) {
+      console.error("Error adding song to queue:", e);
+      toast.error("Failed to add song to queue");
+    } finally {
+      setAddingToQueue(null);
     }
-    catch(e){
-      console.log("Error in Adding song to the Queue");
-    }
-  }
+  };
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-start justify-center pt-[15vh]">
       <div ref={searchRef} className="w-full max-w-2xl mx-4">
@@ -113,7 +146,7 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
               placeholder="Search Any Song Here"
             />
           </div>
-          
+
           {loading && (
             <div className="flex items-center justify-center py-8 border-t border-zinc-500">
               <div className="flex flex-col items-center gap-2">
@@ -132,9 +165,12 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                 <label
                   key={song.id}
                   htmlFor={song.id}
-                  title={`${parse(song.name)} (${formatArtistName(song.artists?.primary)})`}
+                  title={`${parse(song.name)} (${formatArtistName(
+                    song.artists?.primary
+                  )})`}
                   className={`flex gap-2 px-2.5 text-start hover:bg-zinc-800/20 p-2.5 items-center ${
-                    i !== songs.data.results.length - 1 && "border-b border-white/20"
+                    i !== songs.data.results.length - 1 &&
+                    "border-b border-white/20"
                   }`}
                 >
                   <img
@@ -154,13 +190,38 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                     </p>
                   </div>
                   <div>
-                    <button onClick={handlerAddToQueue}>
-                      Add To Queue
+                    <button
+                      onClick={(e) => handlerAddToQueue(song, e)}
+                      disabled={
+                        addingToQueue === song.id || addedSongs.has(song.id)
+                      }
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                        addedSongs.has(song.id)
+                          ? "bg-green-600/20 text-green-400 cursor-not-allowed"
+                          : addingToQueue === song.id
+                          ? "bg-purple-600/20 text-purple-400 cursor-wait"
+                          : "bg-purple-600 hover:bg-purple-700 text-white"
+                      }`}
+                    >
+                      {addingToQueue === song.id ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+                          Adding...
+                        </>
+                      ) : addedSongs.has(song.id) ? (
+                        <>
+                          <Check size={16} />
+                          Added
+                        </>
+                      ) : (
+                        <>
+                          <Plus size={16} />
+                          Add to Queue
+                        </>
+                      )}
                     </button>
                   </div>
-                  <div>
-                    
-                  </div>
+                  <div></div>
                 </label>
               ))}
             </div>

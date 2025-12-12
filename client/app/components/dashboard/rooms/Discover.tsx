@@ -1,19 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { Search, Trash2 } from "lucide-react";
 import axios from "axios";
 import { SearchSongPopup } from "./SearchSongPopup";
-import {
-  Users,
-  MessageSquare,
-  Share2,
-  Link2,
-  Settings,
-  Crown,
-  Volume2,
-  MoreVertical,
-  ChevronDown,
-} from "lucide-react";
+import { Link2, ChevronDown } from "lucide-react";
 import {
   IoMdPause,
   IoMdPlay,
@@ -23,25 +13,86 @@ import {
 } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/app/store/UserContext";
+
 export const Discover = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState("queue");
   const [searchQuery, setSearchQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const {roomId, queue,setQueue,setRoomId,Rooms}=useUserContext();
-const router=useRouter();
-const handleRoomChange=(e)=>{
-  const updatedRoomId=e.target.value;
-  setRoomId(updatedRoomId);
-  router.push(`/Discover/rooms/${updatedRoomId}`);
-  
-}
+  const [loadingQueue, setLoadingQueue] = useState(false);
+
+  const {
+    roomId,
+    queue,
+    setQueue,
+    setRoomId,
+    Rooms,
+    fetchQueue,
+    removeFromQueue,
+  } = useUserContext();
+  const router = useRouter();
+
+  const handleRoomChange = (e) => {
+    const updatedRoomId = e.target.value;
+    setRoomId(updatedRoomId);
+    router.push(`/Discover/rooms/${updatedRoomId}`);
+  };
+
+  const handleFetchQueue = async () => {
+    if (!roomId) return;
+    setLoadingQueue(true);
+    await fetchQueue(roomId);
+    setLoadingQueue(false);
+  };
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    let isMounted = true;
+
+    const loadQueue = async () => {
+      setLoadingQueue(true);
+      try {
+        await fetchQueue(roomId);
+      } finally {
+        if (isMounted) {
+          setLoadingQueue(false);
+        }
+      }
+    };
+
+    loadQueue();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [roomId, fetchQueue]);
+
+  const handleSongAdded = () => {
+    handleFetchQueue();
+  };
+
+  const handleRemoveFromQueue = async (queueId: string) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/queue/${queueId}`
+      );
+      if (response.data.success) {
+        removeFromQueue(queueId);
+      }
+    } catch (error) {
+      console.error("Error removing from queue:", error);
+      alert("Failed to remove song from queue");
+    }
+  };
+
   console.log(Rooms);
   console.log(roomId);
+
   return (
     <div className="max-w-4xl">
       <div className="flex items-center justify-between gap-6 mb-2">
-        <div className="bg-black flex justify-between items-center w-80 border border-white/10 rounded-2xl px-4 py-3 group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300 ">
+        <div className="bg-black flex justify-between items-center w-80 border border-white/10 rounded-2xl px-4 py-3 group-hover:text-white group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(236,72,153,0.8)] transition-all duration-300">
           <input
             className="flex-1 text-sm bg-black focus:outline-none placeholder:text-gray-500"
             type="text"
@@ -52,8 +103,8 @@ const handleRoomChange=(e)=>{
           <Search className="w-4 h-4 text-gray-400" />
         </div>
 
-        <div className="flex items-center gap-3 ">
-           <button className="px-4 py-2.5 bg-black  rounded-xl flex items-center gap-2  transition-all border border-purple-400/20 ">
+        <div className="flex items-center gap-3">
+          <button className="px-4 py-2.5 bg-black rounded-xl flex items-center gap-2 transition-all border border-purple-400/20">
             <Link2 size={16} className="" />
             <span className="text-sm font-medium">Invite</span>
           </button>
@@ -61,20 +112,19 @@ const handleRoomChange=(e)=>{
             <select
               value={roomId || ""}
               onChange={handleRoomChange}
-              className="text-lg font-semibold bg-black shadow-[0_0_5px_rgba(236,72,153,0.8)]  rounded-xl px-4 py-2.5 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
+              className="text-lg font-semibold bg-black shadow-[0_0_5px_rgba(236,72,153,0.8)] rounded-xl px-4 py-2.5 pr-10 cursor-pointer appearance-none focus:outline-none focus:border-purple-400/50 hover:border-purple-400/30 transition-colors"
             >
               {Rooms?.map((room) => {
-              
-                const roomId = typeof room === 'object' ? room.roomId : room;
-                const roomName = typeof room === 'object' ? room.roomId : room;
-                
+                const id = typeof room === "object" ? room.roomId : room;
+                const name = typeof room === "object" ? room.roomId : room;
+
                 return (
                   <option
-                    key={roomId}
-                    value={roomId}
+                    key={id}
+                    value={id}
                     className="bg-[#0a0614] text-white"
                   >
-                    {roomName}
+                    {name}
                   </option>
                 );
               })}
@@ -84,15 +134,20 @@ const handleRoomChange=(e)=>{
               className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
             />
           </div>
-
-         
         </div>
       </div>
-      {open && <SearchSongPopup onClose={() => setOpen(false)} />}
-      <div className=" bg-black text-white pt-4  flex gap-6 max-w-4xl">
+
+      {open && (
+        <SearchSongPopup
+          onClose={() => setOpen(false)}
+          onSongAdded={handleSongAdded}
+        />
+      )}
+
+      <div className="bg-black text-white pt-4 flex gap-6 max-w-4xl">
         <div className="flex-1 bg-[#0a0614]/30 rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="w-52 h-52 bg-black rounded-3xl flex items-center justify-center mb-1 border border-white/10 relative overflow-hidden">
-            <img src="/bg-1.webp" />
+            <img src="/bg-1.webp" alt="Album art" />
           </div>
 
           <div className="text-center mb-2">
@@ -153,7 +208,7 @@ const handleRoomChange=(e)=>{
                   : "text-gray-400 hover:text-gray-300"
               }`}
             >
-              In Queue
+              In Queue ({queue.length})
               {activeTab === "queue" && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-600"></div>
               )}
@@ -188,10 +243,55 @@ const handleRoomChange=(e)=>{
 
           <div className="flex-1 overflow-y-auto">
             {activeTab === "queue" ? (
-              <div className="p-6 space-y-3"></div>
+              <div className="p-4 space-y-2">
+                {loadingQueue ? (
+                  <div className="flex justify-center py-8">
+                    <div className="w-6 h-6 border-2 border-gray-600 border-t-white rounded-full animate-spin" />
+                  </div>
+                ) : queue.length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">
+                    <p>No songs in queue</p>
+                    <p className="text-sm mt-2">Add songs to get started</p>
+                  </div>
+                ) : (
+                  queue.map((item, index) => (
+                    <div
+                      key={item._id}
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 group"
+                    >
+                      <span className="text-gray-400 text-sm w-6">
+                        {index + 1}
+                      </span>
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-12 h-12 rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">
+                          {item.title}
+                        </p>
+                        <p className="text-xs text-gray-400 truncate">
+                          {item.artist}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveFromQueue(item._id)}
+                        className="opacity-0 group-hover:opacity-100 p-2 hover:bg-red-500/20 rounded transition-all"
+                      >
+                        <Trash2 size={16} className="text-red-400" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
             ) : (
               <div className="p-6">
-                <pre className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap font-sans"></pre>
+                <pre className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap font-sans">
+                  {activeTab === "lyrics"
+                    ? "Lyrics will appear here..."
+                    : "Listeners list..."}
+                </pre>
               </div>
             )}
           </div>
