@@ -28,7 +28,6 @@ export const Discover = () => {
     setRoomId,
     Rooms,
     fetchQueue,
-    removeFromQueue,
   } = useUserContext();
   const router = useRouter();
 
@@ -72,22 +71,7 @@ export const Discover = () => {
     handleFetchQueue();
   };
 
-  const handleRemoveFromQueue = async (queueId: string) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:5000/queue/${queueId}`
-      );
-      if (response.data.success) {
-        removeFromQueue(queueId);
-      }
-    } catch (error) {
-      console.error("Error removing from queue:", error);
-      alert("Failed to remove song from queue");
-    }
-  };
-
-  console.log(Rooms);
-  console.log(roomId);
+   
 
   return (
     <div className="max-w-4xl">
