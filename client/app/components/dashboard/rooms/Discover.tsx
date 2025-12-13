@@ -275,12 +275,12 @@ export const Discover = () => {
                           {item.artist}
                         </p>
                       </div>
-                      <button
+                      {/* <button
                         onClick={() => handleRemoveFromQueue(item._id)}
                         className="opacity-0 group-hover:opacity-100 p-2 hover:bg-red-500/20 rounded transition-all"
                       >
                         <Trash2 size={16} className="text-red-400" />
-                      </button>
+                      </button> */}
                     </div>
                   ))
                 )}
