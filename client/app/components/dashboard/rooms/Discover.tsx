@@ -13,6 +13,8 @@ import {
 } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/app/store/UserContext";
+import { usePlayerContext } from  "@/app/store/PlayerContext";
+
 
 export const Discover = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,6 +31,8 @@ export const Discover = () => {
     Rooms,
     fetchQueue,
   } = useUserContext();
+  
+  const { play, state: playerState } = usePlayerContext();
   const router = useRouter();
 
   const handleRoomChange = (e) => {
@@ -71,7 +75,40 @@ export const Discover = () => {
     handleFetchQueue();
   };
 
+  const handlePlaySong = (item) => {
    
+    const songData = {
+      id: item._id,
+      name: item.title,
+      source: "youtube",
+      artists: {
+        primary: [
+          {
+            id: 0,
+            name: item.artist,
+            role: "primary_artist",
+            image: [],
+            type: "artist",
+            url: "",
+          },
+        ],
+      },
+      image: [
+        {
+          quality: "500x500",
+          url: item.imageUrl,
+        },
+      ],
+      downloadUrl: [
+        {
+          quality: "320kbps",
+          url: item.url || item.downloadUrl,
+        },
+      ],
+    };
+
+    play(songData);
+  };
 
   return (
     <div className="max-w-4xl">
@@ -241,7 +278,8 @@ export const Discover = () => {
                   queue.map((item, index) => (
                     <div
                       key={item._id}
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 group"
+                      onClick={() => handlePlaySong(item)}
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 group cursor-pointer"
                     >
                       <span className="text-gray-400 text-sm w-6">
                         {index + 1}

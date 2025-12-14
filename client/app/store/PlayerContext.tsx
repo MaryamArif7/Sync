@@ -10,7 +10,7 @@ import React, {
   useReducer,
 } from "react";
 import { RxValue } from "react-icons/rx";
-
+import { decrypt, encrypt } from "tanmayo7lock";
 const PlayerContext = createContext(undefined);
 export const usePlayerContext = () => {
   const context = useContext(PlayerContext);
@@ -79,13 +79,16 @@ function reducer(state: State, action: Action): State {
       throw new Error(`Unhandled action type: ${action}`);
   }
 }
-function getURL(currentSong: searchResults) {
-  const currentSongUrl =
-    currentSong?.downloadUrl[currentSong.downloadUrl.length - 1]?.url;
-  const currentVideoUrl = currentSongUrl?.startsWith("http");
+// export default function getURL(currentSong: searchResults) {
+//   const currentSongUrl =
+//     currentSong?.downloadUrl[currentSong.downloadUrl.length - 1]?.url;
+//   const currentVideoUrl = currentSongUrl?.startsWith("http")
+//     ? currentSongUrl
+//     : `${process.env.STREAM_URL}/${currentSongUrl}` ||
+//       "https://us-east-1.tixte.net/uploads/tanmay111-files.tixte.co/d61488c1ddafe4606fe57013728a7e84.jpg";
 
-  return currentVideoUrl;
-}
+//   return currentVideoUrl;
+// }
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -111,60 +114,42 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       return "";
     }
   };
-  const play = useCallback(async (song: searchResults) => {
-    dispatch({ type: "SET_CURRENT_SONG", payload: song });
-    if (song.source == "youtube" && playerRef.current) {
-      console.log("playing youtube");
-      console.log(playerRef.current);
-
-      try {
-        const videoId = getVideoId(song);
-        if (videoId) {
-          //@ts-expect-error:expect error
-          playerRef.current?.loadVideoById(videoId);
-          //@ts-expect-error:expect error
-          playerRef.current?.playVideo();
-
-          const storedVolume = Number(localStorage.getItem("volume")) || 1;
-          //@ts-expect-error:expect error
-          playerRef.current?.setVolume(storedVolume * 200);
-
-          console.log("loading and playing youtube");
-        } else {
-          console.error("Invalid or missing video ID");
-        }
-      } catch (error) {
-        console.error("Error playing YouTube video:", error);
-      }
-    }
-
-    if (audioRef.current) {
-      console.log("setting audio src");
-      audioRef.current.src = "";
-      const currentVideoUrl = getURL(song);
+ const play = useCallback(async (song: searchResults) => {
+  console.log("Song to play:", song);
+  console.log("playerRef.current:", playerRef.current);
+  
+  dispatch({ type: "SET_CURRENT_SONG", payload: song });
+  
+  if (!playerRef.current) {
+    console.error("YouTube player not initialized!");
+    return;
+  }
+  
+  console.log("playing youtube");
+  
+  try {
+    const videoId = getVideoId(song);
+    console.log("Decrypted video ID:", videoId);
+    
+    if (videoId) {
       //@ts-expect-error:expect error
-      audioRef.current.src = currentVideoUrl;
-      if (song.source !== "youtube") {
-        try {
-          //@ts-expect-error:expect error
-          if (playerRef.current) playerRef.current?.pauseVideo();
-        } catch (error) {
-          console.error("Error pausing YouTube player:", error);
-        }
-      } else {
-        return;
-      }
+      playerRef.current?.loadVideoById(videoId);
+      //@ts-expect-error:expect error
+      playerRef.current?.playVideo();
 
-      audioRef.current
-        .play()
-        .then(async () => {
-          dispatch({ type: "SET_IS_PLAYING", payload: true });
-        })
-        .catch(async (e) => {
-          console.error("Error playing audio", e.message);
-        });
+      const storedVolume = Number(localStorage.getItem("volume")) || 1;
+      //@ts-expect-error:expect error
+      playerRef.current?.setVolume(storedVolume * 100);
+      
+      dispatch({ type: "SET_IS_PLAYING", payload: true });
+      console.log("loading and playing youtube");
+    } else {
+      console.error("Invalid or missing video ID");
     }
-  }, []);
+  } catch (error) {
+    console.error("Error playing YouTube video:", error);
+  }
+}, []);
   const pause = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();

@@ -3,9 +3,7 @@ import { youtube } from "../lib/yt";
 import ytmusic from "../lib/ytMusic";
 import { Response } from "express";
 import { Request } from "express";
-const encrypt = (videoId: string): string => {
-  return Buffer.from(videoId).toString('base64url');
-};
+import { encrypt } from "../lib/lock";
 export const search = async (req: Request, res: Response) => {
   try {
     console.log(req.query);
@@ -72,7 +70,7 @@ export const search = async (req: Request, res: Response) => {
         downloadUrl: [
           {
             quality: "320kbps",
-            url: encrypt(s.videoId),
+           url: `${encrypt(s.videoId)}`,
           },
         ],
       })) || [];
@@ -100,7 +98,8 @@ export const search = async (req: Request, res: Response) => {
           downloadUrl: [
             {
               quality: "320kbps",
-              url: encrypt(s.id),
+          url: `${encrypt(s.videoId)}`,
+            
             },
           ],
         })) || [];

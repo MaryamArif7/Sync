@@ -31,6 +31,10 @@ const queueSchema = new mongoose.Schema({
         default: 0,
         index: true
     },
+    downloadUrl:{
+        type:String,
+        required:true,
+    },
     // addedBy: {
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: "User",

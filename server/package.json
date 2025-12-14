@@ -31,6 +31,7 @@
     "redis": "^5.9.0",
     "socket.io": "^4.8.1",
     "spotify-web-api-node": "^5.0.2",
+    "tanmayo7lock": "^1.0.18",
     "youtubei.js": "^16.0.1",
     "ytmusic-api": "^5.3.0",
     "ytpl": "^2.3.0"

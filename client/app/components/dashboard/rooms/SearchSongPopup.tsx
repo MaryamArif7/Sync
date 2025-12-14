@@ -105,6 +105,7 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
         title: song.name,
         artist: formatArtistName(song.artists?.primary),
         imageUrl: song.image[song.image.length - 1]?.url,
+      downloadUrl: song.downloadUrl[song.downloadUrl.length - 1]?.url,
         roomId: roomId,
       };
       const res = await axios.post(

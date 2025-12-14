@@ -10,9 +10,9 @@ export const addToQueue = async (req: authRequest, res: Response) => {
         //         message: "User is not authorized,please login again"
         //     })
         // }
-     const {songId,title, artist, imageUrl, roomId } = req.body.songData;
+     const {songId,title, artist, imageUrl,downloadUrl, roomId } = req.body.songData;
      console.log(req.body.songData);
-        if (!songId || !title || !artist || !imageUrl || !roomId) {
+        if (!songId || !title || !artist || !imageUrl || !downloadUrl || !roomId) {
             return res.status(400).json({
                 success: false,
                 message: "Song Id ,title ,roomId and UserId is required"
@@ -28,7 +28,7 @@ export const addToQueue = async (req: authRequest, res: Response) => {
         const lastSong = await Queue.findOne({ roomId }).sort({ position: -1 }).limit(1);
         const newPosition = lastSong ? lastSong.position + 1 : 0;
         const queueItem = new Queue({
-            songId, title, artist, imageUrl, roomId, position: newPosition, // addedBy: userId,
+            songId, title, artist, imageUrl, downloadUrl, roomId, position: newPosition, // addedBy: userId,
 
         })
         await queueItem.save();
