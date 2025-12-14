@@ -14,7 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/app/store/UserContext";
 import { usePlayerContext } from  "@/app/store/PlayerContext";
-
+import Player from "./Player";
 
 export const Discover = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,7 +32,7 @@ export const Discover = () => {
     fetchQueue,
   } = useUserContext();
   
-  const { play, state: playerState } = usePlayerContext();
+  const { play, state: playerState, setCurrentSong, currentSong } = usePlayerContext();
   const router = useRouter();
 
   const handleRoomChange = (e) => {
@@ -165,59 +165,13 @@ export const Discover = () => {
         />
       )}
 
-      <div className="bg-black text-white pt-4 flex gap-6 max-w-4xl">
-        <div className="flex-1 bg-[#0a0614]/30 rounded-3xl p-8 flex flex-col items-center justify-between relative overflow-hidden border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
-          <div className="w-52 h-52 bg-black rounded-3xl flex items-center justify-center mb-1 border border-white/10 relative overflow-hidden">
-            <img src="/bg-1.webp" alt="Album art" />
-          </div>
+      <div className=" text-white pt-4 flex gap-6 max-w-4xl">
+     
+         
+        <Player/>
 
-          <div className="text-center mb-2">
-            <h2 className="text-2xl font-semibold mb-2">Magic Shop</h2>
-            <p className="text-gray-400">BTS</p>
-          </div>
-
-          <div className="w-full max-w-md mb-2">
-            <div className="flex items-center justify-center gap-6 mb-4">
-              <button className="text-gray-400 hover:text-white transition-colors text-2xl">
-                <IoMdSkipBackward />
-              </button>
-
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="bg-black hover:scale-105 w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_5px_rgba(236,72,153,0.3)] transition-all"
-              >
-                {isPlaying ? (
-                  <IoMdPause className="text-2xl" />
-                ) : (
-                  <IoMdPlay className="text-2xl ml-1" />
-                )}
-              </button>
-
-              <button className="text-gray-400 hover:text-white transition-colors text-2xl">
-                <IoMdSkipForward />
-              </button>
-            </div>
-
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-xs text-gray-400 min-w-[35px]">0:00</span>
-              <div className="relative flex-1 h-1">
-                <div className="absolute inset-0 bg-gray-700 rounded-full"></div>
-                <div className="absolute inset-0 bg-gray-900 rounded-full w-0"></div>
-              </div>
-              <span className="text-xs text-gray-400 min-w-[35px]">0:00</span>
-            </div>
-
-            <div className="flex items-center gap-3 justify-center">
-              <button className="text-gray-400 hover:text-white transition-colors text-2xl">
-                <IoMdVolumeHigh />
-              </button>
-              <div className="relative w-24 h-1">
-                <div className="absolute inset-0 bg-gray-700 rounded-full"></div>
-                <div className="absolute inset-0 bg-white rounded-full w-3/4"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        
+        
 
         <div className="w-96 bg-[#0a0614]/30 rounded-3xl flex flex-col border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="flex border-b border-white/10 px-6">
