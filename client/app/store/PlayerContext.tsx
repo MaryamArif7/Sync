@@ -10,7 +10,7 @@ import React, {
   useReducer,
 } from "react";
 import { RxValue } from "react-icons/rx";
-import { decrypt, encrypt } from "tanmayo7lock";
+import { decrypt, encrypt } from "../lib/crypto";
 const PlayerContext = createContext(undefined);
 export const usePlayerContext = () => {
   const context = useContext(PlayerContext);
@@ -106,15 +106,41 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     [state.currentDuration]
   );
   const volume = useMemo(() => state.currentVolume, [state.currentVolume]);
-  const getVideoId = (song: searchResults) => {
-    try {
-      const data = decrypt(song?.downloadUrl?.at(-1)?.url || "");
-      return data;
-    } catch (error) {
+  // const getVideoId = (song: searchResults) => {
+  //   try {
+  //     console.log("from the get video function",song);
+  //     const data = decrypt(song?.downloadUrl?.at(-1)?.url || "");
+  //     return data;
+  //   } catch (error) {
+  //     return "";
+  //     console.log("error decyrpting the video id",error);
+  //   }
+  // };
+ const getVideoId = (song: searchResults) => {
+  try {
+    console.log("Full song object:", song);
+    console.log("downloadUrl array:", song?.downloadUrl);
+    console.log("Last downloadUrl item:", song?.downloadUrl[song.downloadUrl.length - 1]);
+    console.log("URL to decrypt:", song?.downloadUrl[song.downloadUrl.length - 1]?.url);
+    
+    const encryptedUrl = song?.downloadUrl[song.downloadUrl.length - 1]?.url || "";
+    
+    if (!encryptedUrl) {
+      console.error("No encrypted URL found");
       return "";
     }
-  };
- const play = useCallback(async (song: searchResults) => {
+    
+    console.log("Attempting to decrypt:", encryptedUrl);
+    const data = decrypt(encryptedUrl);
+    console.log("Decrypted result:", data);
+    return data;
+  } catch (error) {
+    console.error("Error decrypting video ID:", error);
+    return "";
+  }
+};
+
+  const play = useCallback(async (song: searchResults) => {
   console.log("Song to play:", song);
   console.log("playerRef.current:", playerRef.current);
   

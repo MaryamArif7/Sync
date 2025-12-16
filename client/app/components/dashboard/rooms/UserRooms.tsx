@@ -96,7 +96,7 @@ const router=useRouter();
         </div>
         {userRooms.map((room) => (
           <div
-            key={room.id}
+            key={room.roomId}
             className="mt-1 flex items-center gap-4 p-4 rounded-lg  border border-gray-800 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] cursor-pointer mb-2 transition-colors group space-y-1"
           >
             <div
