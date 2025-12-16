@@ -13,7 +13,7 @@ import {
 } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { useUserContext } from "@/app/store/UserContext";
-import { usePlayerContext } from  "@/app/store/PlayerContext";
+import { usePlayerContext } from "@/app/store/PlayerContext";
 import Player from "./Player";
 
 export const Discover = () => {
@@ -23,16 +23,15 @@ export const Discover = () => {
   const [open, setOpen] = useState(false);
   const [loadingQueue, setLoadingQueue] = useState(false);
 
+  const { roomId, queue, setQueue, setRoomId, Rooms, fetchQueue } =
+    useUserContext();
+
   const {
-    roomId,
-    queue,
-    setQueue,
-    setRoomId,
-    Rooms,
-    fetchQueue,
-  } = useUserContext();
-  
-  const { play, state: playerState, setCurrentSong, currentSong } = usePlayerContext();
+    play,
+    state: playerState,
+    setCurrentSong,
+    currentSong,
+  } = usePlayerContext();
   const router = useRouter();
 
   const handleRoomChange = (e) => {
@@ -76,7 +75,6 @@ export const Discover = () => {
   };
 
   const handlePlaySong = (item) => {
-   
     const songData = {
       id: item._id,
       name: item.title,
@@ -166,12 +164,7 @@ export const Discover = () => {
       )}
 
       <div className=" text-white pt-4 flex gap-6 max-w-4xl">
-     
-         
-        <Player/>
-
-        
-        
+        <Player />
 
         <div className="w-96 bg-[#0a0614]/30 rounded-3xl flex flex-col border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="flex border-b border-white/10 px-6">
