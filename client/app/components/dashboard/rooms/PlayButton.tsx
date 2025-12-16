@@ -18,10 +18,10 @@ const springConfig = {
 };
 
 function PlayButton({ className }: { className?: string }) {
-  const { isPlaying, togglePlayPause } = usePlayerContext();
+  const { isPlaying, PlayPause } = usePlayerContext();
   return (
     <div
-      onClick={togglePlayPause}
+      onClick={PlayPause}
       className="bg-purple cursor-pointer p-4 rounded-full"
     >
       <div className=" w-fit overflow-hidden">

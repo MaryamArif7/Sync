@@ -356,6 +356,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         audioRef,
         setCurrentSong,
         playerRef,
+        PlayPause,
       }}
     >
       {children}
