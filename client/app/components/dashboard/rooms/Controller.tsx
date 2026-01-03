@@ -42,7 +42,7 @@ function Controller({ className }: { className?: string }) {
   );
 
   const handlePlayPrev = () => {
-    if (isAdmin) {
+    if (!isAdmin) {
       playPrev();
     } else {
       toast.error("Only admin can play the previous track.");
@@ -50,7 +50,7 @@ function Controller({ className }: { className?: string }) {
   };
 
   const handlePlayNext = () => {
-    if (isAdmin) {
+    if (!isAdmin) {
       playNext();
     } else {
       toast.error("Only admin can play the next track.");
