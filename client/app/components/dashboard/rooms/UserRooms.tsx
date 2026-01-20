@@ -70,7 +70,7 @@ const router=useRouter();
   };
   const handleJoinRoom=(roomId?:string)=>{
     if(roomId){
-      router.push(`Discover/rooms/${roomId}`)
+       router.push(`/Discover/rooms/${roomId}`);
       setRoomId(roomId);
     }
   }
