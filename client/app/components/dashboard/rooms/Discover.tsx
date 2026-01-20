@@ -209,7 +209,7 @@ export const Discover = () => {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 h-96 overflow-y-auto">
             {activeTab === "queue" ? (
               <div className="p-4 space-y-2">
                 {loadingQueue ? (

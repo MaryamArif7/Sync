@@ -61,7 +61,8 @@ function PLayerCoverComp() {
       );
     }
   };
-
+console.log("from player",currentSong);
+console.log("from player state image test", currentSong?.image?.[0]?.url);
   return (
     <>
       <div className="-z-10 opacity-0 aspect-square absolute">
@@ -116,13 +117,13 @@ function PLayerCoverComp() {
           <Image
             draggable="false"
             priority
-           
+            unoptimized
             alt={currentSong?.name || ""}
             height={200}
             width={200}
             className="cover aspect-square h-full object-cover  w-full"
             src={
-              currentSong?.image?.[currentSong.image.length - 1]?.url || "/bg-1.webp"
+              currentSong?.image?.[0]?.url || "/bg-1.webp"
             }
           />
         ) : (
@@ -130,14 +131,12 @@ function PLayerCoverComp() {
             <Image
               draggable="false"
               priority
-             
+              unoptimized
               alt={currentSong?.name || ""}
-              height={200}
-              width={200}
+              height={100}
+              width={100}
               className="cover z-10  aspect-square h-full object-cover  w-full"
-              src={
-                currentSong?.image?.[currentSong.image.length - 1]?.url || "/bg-1.webp"
-              }
+              src={currentSong?.image?.[0]?.url || "/bg-1.webp"}
             />
           </div>
         )}
