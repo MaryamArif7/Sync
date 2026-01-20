@@ -127,7 +127,7 @@ export const Discover = () => {
             <Link2 size={16} className="" />
             <span className="text-sm font-medium">Invite</span>
           </button>
-          <div className="relative">
+          {/* <div className="relative">
             <select
               value={roomId || ""}
               onChange={handleRoomChange}
@@ -152,7 +152,7 @@ export const Discover = () => {
               size={18}
               className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -166,7 +166,7 @@ export const Discover = () => {
       <div className=" text-white pt-4 flex gap-6 max-w-4xl">
         <Player />
 
-        <div className="w-96 bg-[#0a0614]/30 rounded-3xl flex flex-col border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
+        <div className="w-96 h-[490px] overflow-y-auto bg-[#0a0614]/30 rounded-3xl flex flex-col border border-white/5 shadow-[0_0_5px_rgba(236,72,153,0.3)] backdrop-blur-xl">
           <div className="flex border-b border-white/10 px-6">
             <button
               onClick={() => setActiveTab("queue")}
@@ -209,7 +209,7 @@ export const Discover = () => {
             </button>
           </div>
 
-          <div className="flex-1 h-96 overflow-y-auto">
+          <div className="flex-1  overflow-y-auto">
             {activeTab === "queue" ? (
               <div className="p-4 space-y-2">
                 {loadingQueue ? (

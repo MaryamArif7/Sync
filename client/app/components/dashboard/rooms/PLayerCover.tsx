@@ -119,9 +119,9 @@ console.log("from player state image test", currentSong?.image?.[0]?.url);
             priority
             unoptimized
             alt={currentSong?.name || ""}
-            height={200}
-            width={200}
-            className="cover aspect-square h-full object-cover  w-full"
+            height={250}
+            width={250}
+            className="cover aspect-square  object-cover  "
             src={
               currentSong?.image?.[0]?.url || "/bg-1.webp"
             }
@@ -133,8 +133,8 @@ console.log("from player state image test", currentSong?.image?.[0]?.url);
               priority
               unoptimized
               alt={currentSong?.name || ""}
-              height={100}
-              width={100}
+              height={300}
+              width={300}
               className="cover z-10  aspect-square h-full object-cover  w-full"
               src={currentSong?.image?.[0]?.url || "/bg-1.webp"}
             />
