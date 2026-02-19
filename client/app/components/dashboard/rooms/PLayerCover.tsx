@@ -1,5 +1,5 @@
 "use client";
-import { usePlayerContext} from "../../../store/PlayerContext";;
+import { usePlayerContext } from "../../../store/PlayerContext";
 import { useUserContext } from "../../../store/UserContext";
 import React from "react";
 import Image from "next/image";
@@ -9,9 +9,6 @@ import { decrypt } from "tanmayo7lock";
 function PLayerCoverComp() {
   const { user } = useUserContext();
   const { currentSong, dispatch, playerRef, state } = usePlayerContext();
-
- 
-  
 
   const getVideoId = () => {
     try {
@@ -57,26 +54,24 @@ function PLayerCoverComp() {
     } else {
       console.log(
         "[YouTube] Current song is not from YouTube source:",
-        currentSong?.source
+        currentSong?.source,
       );
     }
   };
-console.log("from player",currentSong);
-console.log("from player state image test", currentSong?.image?.[0]?.url);
+  console.log("from player", currentSong);
+  console.log("from player state image test", currentSong?.image?.[0]?.url);
   return (
     <>
       <div className="-z-10 opacity-0 aspect-square absolute">
         <YouTube
-       
           onEnd={() => {
             console.log(
-              "[YouTube] Video playback ended, emitting songEnded event"
+              "[YouTube] Video playback ended, emitting songEnded event",
             );
-          
           }}
           opts={{
-            height: '10',
-            width: '10',
+            height: "10",
+            width: "10",
             playerVars: {
               origin:
                 typeof window !== "undefined" ? window.location.origin : "",
@@ -109,10 +104,7 @@ console.log("from player state image test", currentSong?.image?.[0]?.url);
         />
       </div>
 
-      <div
-       
-        className=" border-2 border-white/10 relative h-auto min-h-40  overflow-hidden rounded-xl "
-      >
+      <div className=" border-2 border-white/10 relative h-auto min-h-40  overflow-hidden rounded-xl ">
         {!currentSong?.video ? (
           <Image
             draggable="false"
@@ -122,9 +114,7 @@ console.log("from player state image test", currentSong?.image?.[0]?.url);
             height={250}
             width={250}
             className="cover aspect-square  object-cover  "
-            src={
-              currentSong?.image?.[0]?.url || "/bg-1.webp"
-            }
+            src={currentSong?.image?.[0]?.url || "/bg-1.webp"}
           />
         ) : (
           <div className=" relative">
@@ -140,9 +130,6 @@ console.log("from player state image test", currentSong?.image?.[0]?.url);
             />
           </div>
         )}
-
-     
-      
       </div>
     </>
   );
