@@ -64,7 +64,7 @@ mongoose
       console.log('DB CONNECTED ⚡️ - http://localhost:5000');
     });
   })
-  .catch(() => {
-    console.error("Failed to connect to the database");
+  .catch((e) => {
+    console.error("Failed to connect to the database", e);
     process.exit(1);
   });

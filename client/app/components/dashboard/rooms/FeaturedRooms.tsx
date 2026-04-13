@@ -57,7 +57,7 @@ export const FeaturedRooms = ({ rooms, syncId }: FeaturedRoomsProps) => {
           <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4">
             {featuredRooms.map((room) => (
               <div
-                key={room.id}
+                key={room.roomId}
                 className="break-inside-avoid mb-4 cursor-pointer group"
               >
                 <div className="bg-black rounded-xl p-6 border border-gray-800 hover:border-pink-500/30 transition-all relative overflow-hidden">

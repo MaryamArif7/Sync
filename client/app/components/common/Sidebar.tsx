@@ -98,19 +98,7 @@ export function Sidebar({ children }: { children?: React.ReactNode }) {
             
            
           </div>
-          <div className="flex items-center gap-3 mt-64">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-black/30 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.3)]">
-                <span className="text-sm font-bold text-white">JD</span>
-              </div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-semibold text-white truncate">
-                Maryam 
-              </h3>
-              <p className="text-xs text-gray-400 truncate">Premium</p>
-            </div>
-          </div>
+         
         </div>
 
         <div className="p-6 border-t border-white/10">
