@@ -1,7 +1,47 @@
-import YTMusic from "ytmusic-api";
+// import YTMusic from "ytmusic-api";
+// const ytmusic = new YTMusic();
 
+// (async () => {
+//   await ytmusic.initialize();
+// })();
+// export default ytmusic;
+import YTMusic from "ytmusic-api";
 const ytmusic = new YTMusic();
 
-export const ytmusicReady = ytmusic.initialize();
+let initPromise: Promise<boolean> | null = null;
+let initOk = false;
 
+async function ensureInitialized(): Promise<boolean> {
+  if (initOk) return true;
+  if (initPromise) return initPromise;
+
+  const cookies = process.env.COOKIES;
+  if (!cookies || cookies.trim() === "") {
+    initPromise = Promise.resolve(false);
+    return initPromise;
+  }
+
+  initPromise = ytmusic
+    .initialize({ cookies })
+    .then(() => {
+      initOk = true;
+      return true;
+    })
+    .catch(() => false);
+
+  return initPromise;
+}
+
+export async function searchSongsSafe(query: string) {
+  const ok = await ensureInitialized();
+  if (!ok) return null;
+  try {
+    return await ytmusic.searchSongs(query);
+  } catch {
+    return null;
+  }
+}
+
+
+void ensureInitialized();
 export default ytmusic;
