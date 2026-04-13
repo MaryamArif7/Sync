@@ -77,7 +77,7 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
 
       const response = await axios.get(
         `http://localhost:5000/search/?name=${value}`,
-        { signal: controller.signal }
+        { signal: controller.signal },
       );
 
       if (response.data.success) {
@@ -114,7 +114,9 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
         roomId,
       };
 
-      const res = await axios.post("http://localhost:5000/addToQueue", { songData });
+      const res = await axios.post("http://localhost:5000/addToQueue", {
+        songData,
+      });
 
       if (res.status === 200) {
         setAddedSongs((prev) => new Set([...prev, song.id]));
@@ -136,11 +138,7 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[12vh] bg-black/50">
       <div ref={searchRef} className="w-full max-w-xl mx-4">
-
-        {/* Search box */}
         <div className="bg-black rounded-2xl border border-white/10 overflow-hidden">
-
-          {/* Input row */}
           <div className="flex items-center gap-3 px-4 py-3">
             <Search size={18} className="text-zinc-400 shrink-0" />
             <input
@@ -169,7 +167,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
             </kbd>
           </div>
 
-          {/* Loading */}
           {loading && (
             <div className="flex items-center gap-3 px-4 py-4 border-t border-white/10">
               <div className="w-4 h-4 rounded-full border-2 border-zinc-600 border-t-zinc-300 animate-spin" />
@@ -177,7 +174,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
             </div>
           )}
 
-          {/* Empty state */}
           {isEmpty && (
             <div className="flex flex-col items-center py-10 border-t border-white/10 text-zinc-500">
               <Search size={28} className="mb-2 opacity-40" />
@@ -185,7 +181,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
             </div>
           )}
 
-          {/* Results */}
           {!loading && songs?.data?.results?.length > 0 && (
             <div
               ref={containerRef}
@@ -203,7 +198,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                       !isLast ? "border-b border-white/[0.06]" : ""
                     }`}
                   >
-                    {/* Thumbnail */}
                     <img
                       loading="lazy"
                       src={song.image[song.image.length - 1]?.url}
@@ -213,7 +207,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                       className="rounded-lg shrink-0 object-cover"
                     />
 
-                    {/* Info */}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white truncate leading-tight">
                         {parse(song.name)}
@@ -223,7 +216,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                       </p>
                     </div>
 
-                    {/* Add to queue button — Variant A (filled pill) */}
                     <button
                       onClick={(e) => handlerAddToQueue(song, e)}
                       disabled={isAdding || isAdded}
@@ -231,11 +223,12 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
                         inline-flex items-center gap-1.5 px-3.5 py-1.5
                         rounded-full text-xs font-medium shrink-0
                         transition-all duration-150
-                        ${isAdded
-                          ? "bg-[#0F6E56] text-[#E1F5EE] cursor-not-allowed"
-                          : isAdding
-                            ? "bg-[#3C3489] text-[#AFA9EC] cursor-wait"
-                            : "bg-[#534AB7] text-[#EEEDFE] hover:bg-[#3C3489] active:scale-95"
+                        ${
+                          isAdded
+                            ? "bg-[#0F6E56] text-[#E1F5EE] cursor-not-allowed"
+                            : isAdding
+                              ? "bg-[#3C3489] text-[#AFA9EC] cursor-wait"
+                              : "bg-[#534AB7] text-[#EEEDFE] hover:bg-[#3C3489] active:scale-95"
                         }
                       `}
                     >
@@ -262,7 +255,6 @@ export const SearchSongPopup = ({ onClose }: SearchSongPopupProps) => {
             </div>
           )}
 
-          {/* Footer hint */}
           {!loading && (
             <div className="flex items-center justify-between px-4 py-2 border-t border-white/[0.06]">
               <span className="text-xs text-zinc-600">
