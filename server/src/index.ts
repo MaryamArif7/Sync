@@ -7,6 +7,7 @@ import router from "./router/router";
 import { createServer } from "http";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
+import ytmusic, { ytmusicReady } from "./lib/ytMusic";
 
 import mongoose from "mongoose";
 
@@ -57,9 +58,13 @@ io.use(async (socket: CustomSocket, next) => {
   }
 });
 
+
 mongoose
   .connect(process.env.MONGODB_URL || "")
-  .then(() => {
+  .then(async () => {
+        await ytmusicReady;
+        console.log("YTMusic ready");
+
     server.listen(5000, () => {
       console.log('DB CONNECTED ⚡️ - http://localhost:5000');
     });

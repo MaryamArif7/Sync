@@ -23,7 +23,7 @@ export const search = async (req: Request, res: Response) => {
       const data = await redisClient.get(key);
       console.log("cache data for key", data,typeof data);
       if (data) {
-        console.log(' Cache hit for:', key);
+       console.log(' Cache hit for:', key);
         return res.status(200).json({
           success: true,
           // data: JSON.parse(data),
@@ -35,7 +35,7 @@ export const search = async (req: Request, res: Response) => {
     }
 
 
-//console.log("checking before it hit youtube",search);
+console.log("checking before it hit youtube",search);
     const isUrl = search.startsWith("http://") || search.startsWith("https://");
     console.log("checking before it hit youtube",search);
     const yt = isUrl ? await youtube() : null;
@@ -46,16 +46,16 @@ export const search = async (req: Request, res: Response) => {
     const ytSongs = ytMusicResults.status === "fulfilled" ? ytMusicResults.value : null;
     const yt2Songs = youtubeResults.status === "fulfilled" ? youtubeResults.value : null;
 
-//     if (ytMusicResults.status === "rejected") {
-//   console.error("ytMusic failed:", ytMusicResults.reason);
-// }
-// if (youtubeResults.status === "rejected") {
-//   console.error("youtube failed:", youtubeResults.reason);
-// }
-// console.log("ytMusicResults", ytMusicResults);
-// console.log("youtubeResults", youtubeResults);
-// console.log("ytSongs",ytSongs);
-// console.log("yt2 songs",yt2Songs);
+    if (ytMusicResults.status === "rejected") {
+  console.error("ytMusic failed:", ytMusicResults.reason);
+}
+if (youtubeResults.status === "rejected") {
+  console.error("youtube failed:", youtubeResults.reason);
+}
+console.log("ytMusicResults", ytMusicResults);
+
+console.log("ytSongs",ytSongs);
+console.log("yt2 songs",yt2Songs);
     if (!ytSongs && !yt2Songs) {
       return res.status(404).json({
         success: false,
