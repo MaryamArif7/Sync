@@ -3,7 +3,7 @@ import { Music2 } from "lucide-react";
 export const Room=()=> {
   return (
     <div className="relative group">
-      <div className="absolute inset-0 bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] rounded-3xl opacity-60 blur-xl group-hover:opacity-30 transition-opacity" />
+      <div className="absolute inset-0  rounded-3xl opacity-60 blur-xl group-hover:opacity-30 transition-opacity" />
       <div className="relative bg-[#0a0614]/80 backdrop-blur-xl border border-[#2e2044] rounded-3xl p-6  transition-all hover:transform hover:scale-105 duration-300">
         <h3 className="text-lg font-bold text-[#f2f2f2] mb-4">
           Shared Listening Rooms

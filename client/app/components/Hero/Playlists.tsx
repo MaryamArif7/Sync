@@ -3,7 +3,7 @@ import { Music2} from "lucide-react";
 export const Playlists = () => {
   return (
     <div className="relative group">
-      <div className="absolute inset-0  bg-[hsl(25,95%,55%)] opacity-60  rounded-3xl blur-xl group-hover:opacity-30 transition-opacity" />
+      <div className="absolute inset-0  opacity-60  rounded-3xl blur-xl group-hover:opacity-30 transition-opacity" />
       <div className="relative bg-[#0a0614]/80 backdrop-blur-xl border border-[#2e2044] rounded-3xl p-6  transition-all hover:transform hover:scale-105 duration-300">
         <div className="flex items-start gap-4">
           <div className="flex-1">

@@ -3,7 +3,7 @@ import { Music} from "lucide-react";
 export const Lyrics = () => {
   return (
     <div className="relative group">
-      <div className="absolute inset-0 bg-[hsl(25,95%,55%)] opacity-60  rounded-3xl  blur-xl group-hover:opacity-30 transition-opacity" />
+      <div className="absolute inset-0  opacity-60  rounded-3xl  blur-xl group-hover:opacity-30 transition-opacity" />
       <div className="relative bg-[#0a0614]/80 backdrop-blur-xl border border-[#2e2044] rounded-3xl p-6 hover:border-[#ff9068]/50 transition-all hover:transform hover:scale-105 duration-300">
         <div className="flex items-center gap-3 mb-4">
           <div>

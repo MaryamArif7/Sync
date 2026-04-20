@@ -14,31 +14,15 @@ export default function Home() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050209]">
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-950/30 via-[#050209] to-[#050209]" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] opacity-60 bg-[radial-gradient(ellipse_at_top,rgba(120,38,153,0.6),transparent_50%)]" />
-
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(46, 32, 68, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(46, 32, 68, 1) 1px, transparent 1px)",
-          backgroundSize: "4rem 4rem",
-          maskImage:
-            "radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%)",
-        }}
-      />
-
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 w-[500px] h-[500px] opacity-70">
-        <div className="absolute inset-0 blur-3xl bg-[#b366ff]/30" />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      <div className="absolute inset-0 " />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 w-full">
         <div className="flex items-center justify-between gap-12">
           <div className="flex-1 max-w-xl">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="text-[#f2f2f2]">
-                Listen <br /> Together,
+                Listen, <br /> Together,
               </span>
               <br />
               <span className="">Anywhere</span>
@@ -87,11 +71,7 @@ export default function Home() {
 
       <div
         className="absolute inset-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(242, 242, 242, 1) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
+       
       />
       {isOpen && <Login onClose={handleClose} />}
     </section>
